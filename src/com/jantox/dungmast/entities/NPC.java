@@ -22,12 +22,23 @@ public class NPC extends Entity {
 		if(npc == ELI) {
 			this.colmask = new Circle(this.pos, 15);
 			this.sprite = Assets.loadSprite("blacksmith.png");
+			
+			this.store = new Store("Eli's Forge");
 		} else if(npc == BRENDAN) {
 			this.colmask = new Circle(this.pos, 15);
 			this.sprite = Assets.loadSprite("magician.png");
+			
+			this.store = new Store("Xephus Potionry");
+			store.addItem(new Potion(null, 0), 5);
+			store.addItem(new Sword(this), 3);
+			store.addItem(new Axe(this), 2);
+			store.addItem(new Barricade(null, new Vector2D()), 64);
+			store.addItem(new Potion(null, 2), 34);
+			store.addItem(new Bow(this), 2);
+			store.addItem(new Potion(null, 3), 11);
 		}
 	}
-
+	
 	@Override
 	public void handleCollision(Entity e) {
 		// TODO Auto-generated method stub
@@ -41,6 +52,10 @@ public class NPC extends Entity {
 		} else if(npc == BRENDAN) {
 			renderer.drawSprite(sprite, new Vector2D(pos.x - 33, pos.y - 60), true);
 		}
+	}
+
+	public Store getStore() {
+		return store;
 	}
 
 }

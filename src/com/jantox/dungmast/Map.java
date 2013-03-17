@@ -51,7 +51,7 @@ public class Map {
 	
 	public Vector2D pspawn;
 	
-	private Store store;
+	private Store currentstore;
 	
 	public Map() {
 		entities = new ArrayList<Entity>();
@@ -71,7 +71,7 @@ public class Map {
 		
 		grass = Assets.loadSprite("grass.png");
 		
-		store = new Store("Eli's Blacksmith Shop");
+		currentstore = null;
 		
 		int cpc = 0;
 		for(Entity e : entities) {
@@ -82,6 +82,15 @@ public class Map {
 	}
 	
 	public void update() {
+		currentstore = null;
+		for(Entity e : entities) {
+			if(e instanceof NPC) {
+				if(e.distanceSquared(player) <= 50 * 50) {
+					currentstore = ((NPC)e).getStore();
+				}
+			}
+		}
+		
 		spawner.update();
 		
 		for(int i = 0; i < entities.size(); i++) {
@@ -188,7 +197,7 @@ public class Map {
 		renderer.drawLine(new Vector2D(UserInput.x, -2), new Vector2D(UserInput.x, UserInput.y - 3), false);
 		renderer.drawLine(new Vector2D(UserInput.x, UserInput.y + 3), new Vector2D(UserInput.x, 1000), false);*/
 		
-		if(store == null) {
+		if(currentstore == null) {
 			if(UserInput.control) {
 				controlmap.render(renderer);
 			} else {
@@ -258,7 +267,7 @@ public class Map {
 				renderer.drawText("Barricades: " + bc, new Vector2D(534, 445));
 			}
 		} else {
-			store.render(renderer);
+			currentstore.render(renderer);
 		}
 	}
 	
