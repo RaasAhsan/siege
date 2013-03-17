@@ -1,0 +1,62 @@
+seed 3244435
+size 1000,1000
+
+tmstart
+                     +++++++++++++++                        
+                     +   d     a   +           
+                     +      e      +                                     
+                     +             +                        
+                     +             +                        
+                     +             +                        
+                     +      p      +                        
+                     +             +                        
+                     +             +                        
+      +++++++++++++++++           ++++++++++++++++++++      
+      +                     w                        +      
+      +                 bb  w bb                     +      
+      +    f    f           w                        +      
+      +                     w                        +      
+      +         b           w                        +      
+      +             wwwwwwwww                        +      
+      +                     wwwwwwwwwwww    c     f  +      
+      +    b    c     b     w                        +      
+      +                     w                        +      
+      +                     w                        +      
+      +         b   f       w                     f  +      
+      +      w              w            f           +      
+      +      w              w                        +      
+      +      w              w                        +      
+      +      w              w                        +      
+      +      w              w                        +      
+      +      w              w                        +      
+      +      w              w                        +      
+      +      w                                       +      
+      +      w                                  b    +      
+      +    b w            b                          +      
+      +      w                                       +      
+      +wwwwwwwwwwwwwwww     c     wwwwwwwwwwwwwwwwwww+      
+      +         w                           w b      +      
+      +    b    w                           w        +      
+      +         w                           w        +      
+      +         w           w               w        +      
+      +         w           w               w        +      
+      +         w           w               w        +      
+      +         w           w               w        +      
+      +         w           w               w        +      
+      +         w           w               w        +      
+      +         w           w               w        +     
+      +         w      f    w             f w        +      
+      +                     w               w        +      
+      +                     w               w        +      
+      +         c   wwwwwwwww               w        +      
+      +                     w                        +      
+      + f                   w                        +      
+      +                     wwwwwwwwww      c        +      
+      +                     w                        +      
+      +                     w                        +      
+      +                     w                        +      
+      +                     w                        +      
+      +                  b bw  b               f     +      
+      +                     w                        +      
+      ++++++++++++++++++++++++++++++++++++++++++++++++      
+tmend

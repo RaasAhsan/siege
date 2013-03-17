@@ -1,0 +1,59 @@
+package com.jantox.dungmast.entities;
+
+import com.jantox.dungmast.Item;
+import com.jantox.dungmast.Renderer;
+import com.jantox.dungmast.math.Vector2D;
+import com.jantox.dungmast.scripts.Assets;
+
+public class Potion extends Entity implements Item {
+
+	public static final int POTION_HEALTH = 0;
+	public static final int POTION_SWIFT = 1;
+	public static final int POTION_STRENGTH = 2;
+	
+	private int type;
+	private Player p;
+ 	
+	public Potion(Player player, int type) {
+		super(new Vector2D());
+		
+		this.p = player;
+		this.type = type;
+	}
+	
+	@Override
+	public void render(Renderer renderer) {
+		
+	}
+
+	@Override
+	public void handleCollision(Entity e) {
+		
+	}
+
+	@Override
+	public int onItemUse() {
+		p.potion = 3600;
+		return 0;
+	}
+
+	@Override
+	public void onHeld() {
+		
+	}
+
+	@Override
+	public void onNotHeld() {
+		
+	}
+
+	@Override
+	public int getRest() {
+		return 60;
+	}
+	
+	public int getType() {
+		return type;
+	}
+
+}

@@ -1,0 +1,5 @@
+monster zombie
+sprite zombie.png
+speed 1.4
+damage 34
+health 50
