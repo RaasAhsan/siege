@@ -224,47 +224,31 @@ public class Map {
 				}
 				renderer.drawText("Gems: " + DungeonGame.coins, new Vector2D(5, 55));
 				
-				player.getInventory().render(renderer);
+				//player.getInventory().render(renderer);
 				
 				minimap.render(renderer);
 				
-				renderer.setColor(new Color(0, 0,0,40));
-				renderer.fillRect(2, 385, 190, 110);
-				renderer.fillRect(525, 385, 170, 110);
+				renderer.setColor(new Color(0, 0,0,120));
+				renderer.fillRect(2, 475, 696, 20);
+				//renderer.fillRect(2, 385, 190, 110);
+				//renderer.fillRect(525, 385, 170, 110);
 				
-				int cy = 405;
+				int cx = 7;
 				for(int j = 0; j < 5; j++) {
 					ControlPoint cp = cps[j];
 					
-					String status = "";
-					Color c = Color.GREEN;
-					if(cp.getOwnership() == 10000 && cp.getOwner() == 0) {
-						status = "SAFE";
-						c = Color.GREEN;
-					} else if(cp.getOwnership() == 0 && cp.getOwner() == 1) {
-						status = "TAKEN";
-						c = Color.RED;
-					} else if(cp.getOwnership() != 10000 && cp.getOwner() == 0) {
-						status = "LOSING";
-						c = Color.YELLOW;
-					} else if(cp.getOwnership() != 0 && cp.getOwner() == 1) {
-						status = "CAPTURING";
-						c = Color.YELLOW;
-					} else if(cp.getOwner() == -1) {
-						status = "NEUTRAL";
-						c = Color.BLUE;
-					}
+					renderer.setColor(Color.RED);
+					renderer.fillRect(cx, 480, 120, 10);
+					renderer.setColor(Color.GREEN);
+					renderer.fillRect(cx, 480, cp.getOwnership() / (10000 / 120), 10);
 					
-					renderer.setColor(c);
-					renderer.drawText("Control Point " + (j+1) + ": " + status, new Vector2D(5, cy));
-					
-					cy += 20;
+					cx += 140;
 				}
 				
-				renderer.setColor(Color.BLACK);
+				/*renderer.setColor(Color.BLACK);
 				renderer.drawText("AGC Drones: " + agc, new Vector2D(534, 405));
 				renderer.drawText("Sentry Guns: " + sg, new Vector2D(534, 425));
-				renderer.drawText("Barricades: " + bc, new Vector2D(534, 445));
+				renderer.drawText("Barricades: " + bc, new Vector2D(534, 445));*/
 			}
 		} else {
 			currentstore.render(renderer);

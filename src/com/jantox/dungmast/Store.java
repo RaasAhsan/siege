@@ -83,7 +83,6 @@ public class Store {
 	}
 	
 	public void render(Renderer renderer) {
-		
 		renderer.drawSprite(store, new Vector2D(50, 50), false);
 		renderer.setColor(Color.BLACK);
 		renderer.drawText(name, new Vector2D(300, 75));
