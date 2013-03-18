@@ -90,7 +90,7 @@ public class DungeonGame extends Canvas implements Runnable {
 		double lastRenderTime = System.nanoTime();
 
 		// If we are able to get as high as this FPS, don't render again.
-		final double TARGET_FPS = 1000;
+		final double TARGET_FPS = 60;
 		final double TARGET_TIME_BETWEEN_RENDERS = 1000000000 / TARGET_FPS;
 		
 		int lastSecondTime = (int) (lastUpdateTime / 1000000000);

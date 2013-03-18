@@ -222,6 +222,8 @@ public class Map {
 					renderer.drawSprite(player.bodyarmor, new Vector2D(hx - 5, 25), false);
 					hx += 16;
 				}
+				
+				renderer.setColor(Color.GREEN);
 				renderer.drawText("Gems: " + DungeonGame.coins, new Vector2D(5, 55));
 				
 				//player.getInventory().render(renderer);
@@ -229,18 +231,29 @@ public class Map {
 				minimap.render(renderer);
 				
 				renderer.setColor(new Color(0, 0,0,120));
-				renderer.fillRect(2, 475, 696, 20);
-				//renderer.fillRect(2, 385, 190, 110);
-				//renderer.fillRect(525, 385, 170, 110);
+				renderer.fillRect(2, 465, 696, 30);
+				
+				renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
 				
 				int cx = 7;
 				for(int j = 0; j < 5; j++) {
 					ControlPoint cp = cps[j];
 					
-					renderer.setColor(Color.RED);
+					renderer.setColor(Color.WHITE);
+					renderer.drawText("Control Point " + (j + 1), new Vector2D(cx + 8, 477));
+					
+					renderer.setColor(new Color(205, 50, 50));
 					renderer.fillRect(cx, 480, 120, 10);
-					renderer.setColor(Color.GREEN);
+					renderer.setColor(new Color(50, 150, 50));
 					renderer.fillRect(cx, 480, cp.getOwnership() / (10000 / 120), 10);
+					
+					/*renderer.setColor(new Color(50, 105, 50));
+					for(int z = 0; z < cp.getOwnership() / (10000 / 120); z+=8) {
+						renderer.drawLine(new Vector2D(cx + z + 5, 480), new Vector2D(cx + z - 5, 480 + 10), false);
+					}*/
+					
+					renderer.setColor(Color.BLACK);
+					renderer.drawRect(new Rectangle(cx, 480, 120, 10));
 					
 					cx += 140;
 				}
