@@ -224,9 +224,9 @@ public class Map {
 				renderer.setColor(Color.GREEN);
 				renderer.drawText("Gems: " + DungeonGame.coins, new Vector2D(5, 55));
 				
-				player.getInventory().render(renderer);
-				
 				minimap.render(renderer);
+				
+				player.getInventory().render(renderer);
 				
 				renderer.setColor(new Color(0, 0,0,120));
 				renderer.fillRect(2, 465, 696, 30);
