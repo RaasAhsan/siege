@@ -3,6 +3,7 @@ package com.jantox.dungmast.entities;
 import java.util.ArrayList;
 
 import com.jantox.dungmast.Dropper;
+import com.jantox.dungmast.MasterSpawner;
 import com.jantox.dungmast.Renderer;
 import com.jantox.dungmast.UserInput;
 import com.jantox.dungmast.colsys.Circle;
@@ -30,6 +31,8 @@ public class Zombie extends Living {
 		this.sprite = Assets.loadSprite("zombie.png");
 		
 		p = map.getRandomControlPoint();
+		
+		MasterSpawner.CURRENT_MONSTERS++;
 		
 		this.requestCollisions(entity_type.PLAYER, entity_type.GATE, entity_type.CONTROL_POINT, entity_type.BARRICADE, entity_type.SENTRY_GUN, entity_type.AGC);
 	}

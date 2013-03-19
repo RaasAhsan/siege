@@ -1,6 +1,7 @@
 package com.jantox.dungmast.entities;
 
 import com.jantox.dungmast.Dropper;
+import com.jantox.dungmast.MasterSpawner;
 import com.jantox.dungmast.math.Vector2D;
 
 public abstract class Living extends Entity implements Dropper {
@@ -17,6 +18,9 @@ public abstract class Living extends Entity implements Dropper {
 	public void update() {
 		if(this.isDead())  {
 			expired = true;
+			if(this instanceof Zombie || this instanceof Skeleton) {
+				MasterSpawner.CURRENT_MONSTERS--;
+			}
 			this.drop(rand.nextInt(5000));
 			for(int i = 0; i < 50; i++) {
 				double val = rand.nextGaussian();

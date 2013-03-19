@@ -2,6 +2,7 @@ package com.jantox.dungmast.entities;
 
 import java.util.ArrayList;
 
+import com.jantox.dungmast.MasterSpawner;
 import com.jantox.dungmast.Renderer;
 import com.jantox.dungmast.colsys.Circle;
 import com.jantox.dungmast.colsys.CollisionSystem;
@@ -16,6 +17,8 @@ public class Skeleton extends Living {
 	
 	int breakTime = 0;
 	
+	ControlPoint p;
+	
 	public Skeleton(Vector2D pos, Vector2D gotoline) {
 		super(pos);
 		this.gotoline = gotoline;
@@ -24,6 +27,9 @@ public class Skeleton extends Living {
 		this.health = 300;
 		
 		this.sprite = Assets.loadSprite("skeleton.png");
+		
+		MasterSpawner.CURRENT_MONSTERS ++;
+		p = map.getRandomControlPoint();
 		
 		this.requestCollisions(entity_type.PLAYER, entity_type.GATE, entity_type.CONTROL_POINT, entity_type.BARRICADE);
 	}
@@ -55,7 +61,6 @@ public class Skeleton extends Living {
 	public void update() {
 		super.update();
 		
-		Entity p = map.getClosestEntity(this, entity_type.CONTROL_POINT);
 		if(breakTime > 0)
 			breakTime --;
 		

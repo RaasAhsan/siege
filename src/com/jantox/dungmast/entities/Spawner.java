@@ -35,7 +35,7 @@ public class Spawner extends Living {
 		
 		this.sprite = Assets.loadSprite("spawner.png");
 		
-		MasterSpawner.CURRENT_MONSTERS++;
+		MasterSpawner.CURRENT_SPAWNERS++;
 	}
 	
 	public void update() {
@@ -57,6 +57,7 @@ public class Spawner extends Living {
 						sps.multiply(40 + Entity.rand.nextGaussian() * 128);
 						sps.add(pos.copy());
 						this.spawn(entity_type.PLAYER, sps, rand);
+						System.out.println("Monsters Alive: " + MasterSpawner.CURRENT_MONSTERS);
 					}
 				}
 			}

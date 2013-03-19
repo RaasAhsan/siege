@@ -28,11 +28,17 @@ public class MasterSpawner {
 		if(now - ms >= 1000) {
 			seconds++;
 			ms = System.currentTimeMillis();
+			
+			if(seconds % 15 == 0 && MasterSpawner.CURRENT_SPAWNERS < MAX_SPAWNERS) {
+				map.spawn(new Spawner(map.cps[2].getCloseTo(300)));
+				System.out.println("Spawners Active: " + CURRENT_SPAWNERS);
+			}
 		}
 		
-		if(seconds >= 15 && MasterSpawner.CURRENT_SPAWNERS < MAX_SPAWNERS) {
-			map.spawn(new Spawner(map.cps[2].getCloseTo(300)));
+		if(seconds >= 60) {
 			seconds = 0;
+			
+			// this is the spawner algorithm
 		}
 	}
 	
