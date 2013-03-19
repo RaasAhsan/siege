@@ -3,6 +3,7 @@ package com.jantox.dungmast.entities;
 import java.util.Random;
 
 import com.jantox.dungmast.Map;
+import com.jantox.dungmast.MasterSpawner;
 import com.jantox.dungmast.Renderer;
 import com.jantox.dungmast.colsys.AABB;
 import com.jantox.dungmast.colsys.Line;
@@ -33,23 +34,30 @@ public class Spawner extends Living {
 		this.spawning = true;
 		
 		this.sprite = Assets.loadSprite("spawner.png");
+		
+		MasterSpawner.CURRENT_MONSTERS++;
 	}
 	
 	public void update() {
 		super.update();
+		
+		if(health <= 0)
+			MasterSpawner.CURRENT_SPAWNERS--;
 		
 		timeSinceLast++;
 		
 		if(timeSinceLast > SPAWN_BREAK) {
 			if(rand.nextInt() % 37 == 0) {
 				if(spawning) {
-					Vector2D rand = this.getCloseTo(180);
-					
-					Vector2D sps = new Vector2D(Entity.rand.nextGaussian(), Entity.rand.nextGaussian());
-					sps.normalize();
-					sps.multiply(40 + Entity.rand.nextGaussian() * 128);
-					sps.add(pos.copy());
-					this.spawn(entity_type.PLAYER, sps, rand);
+					if(MasterSpawner.CURRENT_MONSTERS < MasterSpawner.MAX_MONSTERS) {
+						Vector2D rand = this.getCloseTo(180);
+						
+						Vector2D sps = new Vector2D(Entity.rand.nextGaussian(), Entity.rand.nextGaussian());
+						sps.normalize();
+						sps.multiply(40 + Entity.rand.nextGaussian() * 128);
+						sps.add(pos.copy());
+						this.spawn(entity_type.PLAYER, sps, rand);
+					}
 				}
 			}
 		}
