@@ -91,7 +91,7 @@ public class Skeleton extends Living {
 		
 		ArrayList<Entity> ale = map.getEntities(entity_type.ALL);
 		for(Entity e : ale) {
-			if(e != this && e != p && !(e instanceof Gate)) {
+			if(e != this && !(e instanceof ControlPoint) && !(e instanceof Gate)) {
 				if(CollisionSystem.collides(e.getMask(), this.getMask())) {
 					Vector2D toa = new Vector2D(pos.x - e.pos.x, pos.y - e.pos.y);
 					

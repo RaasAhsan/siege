@@ -105,12 +105,13 @@ public class Zombie extends Living {
 		if(sdir < 0)
 			sdir += 4;
 		
-		sprite.setAnimation(sdir, sdir, 0);
+		if(!sprite.isAnimation(sdir * 4, sdir * 4 + 3, 12))
+			sprite.setAnimation(sdir * 4, sdir * 4 + 3, 12);
 		sprite.update();
 		
 		ArrayList<Entity> ale = map.getEntities(entity_type.ALL);
 		for(Entity e : ale) {
-			if(e != this && e != p && !(e instanceof Gate)) {
+			if(e != this && !(e instanceof ControlPoint) && !(e instanceof Gate)) {
 				if(CollisionSystem.collides(e.getMask(), this.getMask())) {
 					Vector2D toa = new Vector2D(pos.x - e.pos.x, pos.y - e.pos.y);
 					
