@@ -52,12 +52,11 @@ public class Player extends Living {
 		this.pickup(new Blaster(this));
 		this.pickup(new Bow(this));
 		this.pickup(new Potion(this, 1));
-		this.pickup(new Potion(this, 1));
-		this.pickup(new Potion(this, 0));
-		this.pickup(new Potion(this, 0));
-		this.pickup(new Potion(this, 3));
-		this.pickup(new Potion(this, 3));
-		this.pickup(new Potion(this, 2));
+		for(int i = 0; i < 64; i++) {
+			this.pickup(new Projectile(new Vector2D(0, 0), new Vector2D(0, 0), 0, Projectile.ARROW));
+		}
+		for(int i = 0; i < 8; i++)
+			this.pickup(new SentryGun(null, new Vector2D()));
 		/*this.pickup(new Axe(this));
 		this.pickup(new Hammer(this));
 		for(int i = 0; i < 128; i++) {

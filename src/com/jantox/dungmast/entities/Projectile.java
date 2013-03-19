@@ -77,7 +77,7 @@ public class Projectile extends Entity implements Item {
 				((Living)e).damage(damage);
 			}
 		}
-		if(!(e instanceof Player) && !(e instanceof Projectile)) {
+		if(!(e instanceof Player) && !(e instanceof Projectile) && !(e instanceof SentryGun) && !(e instanceof ControlPoint)) {
 			this.expired = true;
 			for(int i = 0; i < 3; i++) {
 				Vector2D vel = new Vector2D(rand.nextGaussian()/6, -3/100);

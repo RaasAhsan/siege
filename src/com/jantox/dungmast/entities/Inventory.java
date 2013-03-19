@@ -31,7 +31,7 @@ public class Inventory extends Entity {
 	private int rest;
 	
 	public Inventory() {
-		super(new Vector2D(200, 450));
+		super(new Vector2D(200, 10));
 		
 		slots = new ArrayList<ArrayList<Item>>();
 		

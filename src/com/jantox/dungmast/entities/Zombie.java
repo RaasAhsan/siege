@@ -21,6 +21,8 @@ public class Zombie extends Living {
 	
 	ControlPoint p;
 	
+	long timedone = 0;
+	
 	public Zombie(Vector2D pos, Vector2D gotoline) {
 		super(pos);
 		this.gotoline = gotoline;
@@ -63,6 +65,12 @@ public class Zombie extends Living {
 	@Override
 	public void update() {
 		super.update();
+		
+		timedone++;
+		
+		if(timedone > 60 * 45) {
+			this.expired = true;
+		}
 		
 		if(breakTime > 0)
 			breakTime --;

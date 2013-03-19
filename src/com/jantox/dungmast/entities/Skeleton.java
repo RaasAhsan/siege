@@ -19,6 +19,8 @@ public class Skeleton extends Living {
 	
 	ControlPoint p;
 	
+	long timedone = 0;
+	
 	public Skeleton(Vector2D pos, Vector2D gotoline) {
 		super(pos);
 		this.gotoline = gotoline;
@@ -60,6 +62,12 @@ public class Skeleton extends Living {
 	@Override
 	public void update() {
 		super.update();
+		
+		timedone++;
+		
+		if(timedone > 60 * 45) {
+			this.expired = true;
+		}
 		
 		if(breakTime > 0)
 			breakTime --;

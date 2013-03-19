@@ -116,8 +116,6 @@ public class Map {
 							if (req.contains(x.getEntityType()) || req.contains(entity_type.ALL)) {
 								if (CollisionSystem.collides(e.getMask(), x.getMask())) {
 									if(e instanceof Projectile) {
-										if(x instanceof ControlPoint) 
-											continue;
 										if(x instanceof Decoration) {
 											if(((Decoration)x).getType() == Decoration.FOOTPATH)
 												continue;
@@ -226,7 +224,7 @@ public class Map {
 				renderer.setColor(Color.GREEN);
 				renderer.drawText("Gems: " + DungeonGame.coins, new Vector2D(5, 55));
 				
-				//player.getInventory().render(renderer);
+				player.getInventory().render(renderer);
 				
 				minimap.render(renderer);
 				
@@ -425,7 +423,7 @@ public class Map {
 		double dist = 1000000000;
 		
 		for(Entity test : entities) {
-			if(test.getEntityType() == entity_type.ZOMBIE || test.getEntityType() == entity_type.SKELETON) {
+			if(test.getEntityType() == entity_type.ZOMBIE || test.getEntityType() == entity_type.SKELETON || test.getEntityType() == entity_type.SPAWNER) {
 				if(me.distanceSquared(test) < dist) {
 					e = test;
 					dist = me.distanceSquared(test);

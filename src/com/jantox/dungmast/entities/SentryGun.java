@@ -50,9 +50,19 @@ public class SentryGun extends Living implements Item {
 		if(!inventory) {
 			Entity e = map.getClosestMonster(this);
 			if(e != null) {
-				if(distanceSquared(e) < 35 * 35) {
-					if(ticks % 20 == 0) {
-						((Living)e).damage(5);
+				if(distanceSquared(e) < 100 * 100) {
+					if(ticks % 30 == 0) {
+						Vector2D pvel = new Vector2D(e.pos.x, e.pos.y);
+						Vector2D cvel = new Vector2D(this.pos.x, this.pos.y - 20);
+
+						double angle = cvel.angleTo(pvel);
+
+						double cx = Math.cos(angle);
+						double cy = Math.sin(angle);
+						Vector2D vel = new Vector2D(cx, cy);
+
+						Vector2D np = new Vector2D(this.pos.x, this.pos.y);
+						map.spawn(new Projectile(np, vel, angle, Projectile.BLAST));
 					}
 					
 					double angle = Math.toDegrees(e.pos.angleTo(this.getPosition()));
@@ -89,9 +99,10 @@ public class SentryGun extends Living implements Item {
 
 	@Override
 	public void render(Renderer renderer) {
-		if(!inventory)
+		if(!inventory) {
 			renderer.drawSprite(sprite, new Vector2D(pos.x - 16, pos.y - 27), true);
-		
+		}
+			
 		if(held) {
 			Vector2D pvel = new Vector2D(UserInput.x + map.getCamera().pos.x, UserInput.y + map.getCamera().pos.y);
 			
@@ -128,14 +139,14 @@ public class SentryGun extends Living implements Item {
 	public int onItemUse() {
 		Vector2D pvel = new Vector2D(UserInput.x + map.getCamera().pos.x, UserInput.y + map.getCamera().pos.y);
 		
-		if(map.isFree(pvel, 5)) {
+		if(map.isFree(pvel, 15)) {
 			this.pos = pvel.copy();
 			map.getPlayer().getInventory().useItem(ItemType.SENTRY_GUN);
 			map.spawn(new SentryGun(null, this.pos.copy()));
 			held = false;
 		}
 		
-		return 0;
+		return 1;
 	}
 
 	@Override
