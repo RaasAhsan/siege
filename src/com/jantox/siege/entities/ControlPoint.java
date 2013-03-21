@@ -13,15 +13,16 @@ import com.jantox.siege.scripts.Assets;
 
 public class ControlPoint extends Entity {
 	
+	public static int CID = 0;
 	int id;
 	int owner = 0;
 	int ownership = 10000; // 0 for enemy, 10000 for us
 	
 	int pbreak = 0;
 
-	public ControlPoint(int id, Vector2D pos) {
+	public ControlPoint(Vector2D pos) {
 		super(pos);
-		this.id = id;
+		this.id = ControlPoint.CID++;
 		
 		this.colmask = new Circle(pos, 50);
 		
@@ -138,6 +139,10 @@ public class ControlPoint extends Entity {
 		} else if(owner == -1) {
 			ownership = 10000;
 		}
+	}
+
+	public int getControlPointID() {
+		return id;
 	}
 
 }

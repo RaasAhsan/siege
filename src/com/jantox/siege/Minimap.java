@@ -16,6 +16,7 @@ import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Skeleton;
 import com.jantox.siege.entities.Tree;
 import com.jantox.siege.entities.Zombie;
+import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 
@@ -24,10 +25,14 @@ public class Minimap {
 	private Vector2D pos;
 	private Map map;
 	
+	private BitmapFont numbers;
+	
 	public Minimap(Map map) {
 		this.map = map;
 		
 		this.pos = new Vector2D(535, 15);
+		
+		numbers = new BitmapFont();
 	}
 	
 	public void update() {
@@ -50,39 +55,51 @@ public class Minimap {
 		
 		for(Entity e : entities) {
 			renderer.setColor(Color.BLACK);
-			if(e instanceof Zombie || e instanceof Skeleton) {
-				renderer.setColor(Color.RED);
-			} else if(e instanceof Fence) {
-				renderer.setColor(new Color(139, 69, 69));
-			} else if(e instanceof Gate) {
-				renderer.setColor(new Color(139, 60, 60));
-			} else if(e instanceof Tree) {
-				renderer.setColor(new Color(0, 100, 0));
-			} else if(e instanceof SentryGun || e instanceof AGC) {
-				renderer.setColor(new Color(0, 0, 200));
-			} else if(e instanceof ControlPoint) {
-				renderer.setColor(new Color(255, 255, 0));
-			} else if(e instanceof Projectile || e instanceof Gem) {
-				continue;
-			}
-			
-			Vector2D to = e.pos.copy();
-			to.subtract(p.getPosition());
-			
-			to.normalize();
-			to.multiply(Math.sqrt(e.distanceSquared(p)) / 5);
-			
-			to.add(ppos);
-			
-			if(to.distanceSquared(ppos) < 75 * 75) {
-				if(e instanceof Decoration) {
-					if(((Decoration)e).getType() == Decoration.FOOTPATH) {
-						renderer.setColor(Color.gray);
-						renderer.fillRect(to.getX(), to.getY(), 7, 7);
-					} else
+			if(!(e instanceof ControlPoint)) {
+				if(e instanceof Zombie || e instanceof Skeleton) {
+					renderer.setColor(Color.RED);
+				} else if(e instanceof Fence) {
+					renderer.setColor(new Color(139, 69, 69));
+				} else if(e instanceof Gate) {
+					renderer.setColor(new Color(139, 60, 60));
+				} else if(e instanceof Tree) {
+					renderer.setColor(new Color(0, 100, 0));
+				} else if(e instanceof SentryGun || e instanceof AGC) {
+					renderer.setColor(new Color(0, 0, 200));
+				} else if(e instanceof Projectile || e instanceof Gem) {
+					continue;
+				}
+				
+				Vector2D to = e.pos.copy();
+				to.subtract(p.getPosition());
+				
+				to.normalize();
+				to.multiply(Math.sqrt(e.distanceSquared(p)) / 5);
+				
+				to.add(ppos);
+				
+				if(to.distanceSquared(ppos) < 75 * 75) {
+					if(e instanceof Decoration) {
+						if(((Decoration)e).getType() == Decoration.FOOTPATH) {
+							renderer.setColor(Color.gray);
+							renderer.fillRect(to.getX(), to.getY(), 7, 7);
+						} else
+							renderer.fillRect(to.getX(), to.getY(), 2, 2);
+					} else {
 						renderer.fillRect(to.getX(), to.getY(), 2, 2);
-				} else {
-					renderer.fillRect(to.getX(), to.getY(), 2, 2);
+					}
+				}
+			} else {
+				Vector2D to = e.pos.copy();
+				to.subtract(p.getPosition());
+				
+				to.normalize();
+				to.multiply(Math.sqrt(e.distanceSquared(p)) / 5);
+				
+				to.add(ppos);
+				if(to.distanceSquared(ppos) <= 65 * 65) {
+					String cps = String.valueOf(((ControlPoint)e).getControlPointID());
+					this.numbers.render(renderer, new Vector2D(to.x - 16, to.y - 16), cps);
 				}
 			}
 		}

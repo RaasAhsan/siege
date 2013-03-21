@@ -112,7 +112,7 @@ public class ScriptReader {
 				} else if(c == 'a') {
 					map.spawnArmory(new Vector2D(tx * 32, ty * 32));
 				} else if(c == 'c') {
-					map.spawn(new ControlPoint(0, new Vector2D(tx * 32, ty * 32)));
+					map.spawn(new ControlPoint(new Vector2D(tx * 32, ty * 32)));
 				} else if(c == 'b') {
 					map.spawn(new Barricade(null, new Vector2D(tx * 32, ty * 32)));
 				} else if(c == 'w') {
