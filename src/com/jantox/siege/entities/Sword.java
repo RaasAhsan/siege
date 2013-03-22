@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.jantox.siege.Item;
 import com.jantox.siege.UserInput;
+import com.jantox.siege.entities.monsters.Skeleton;
+import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;

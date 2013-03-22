@@ -32,10 +32,14 @@ public class NPC extends Entity {
 			store.addItem(new Potion(null, 0), 5);
 			store.addItem(new Sword(this), 3);
 			store.addItem(new Axe(this), 2);
+			store.addItem(new Hammer(this), 2);
+			store.addItem(new Potion(null, 1), 34);
 			store.addItem(new Barricade(null, new Vector2D()), 64);
 			store.addItem(new Potion(null, 2), 34);
 			store.addItem(new Bow(this), 2);
 			store.addItem(new Potion(null, 3), 11);
+			store.addItem(new SentryGun(null, new Vector2D()), 64);
+			store.addItem(new Projectile(new Vector2D(0, 0), new Vector2D(0, 0), 0, Projectile.ARROW), 64);
 		}
 	}
 	

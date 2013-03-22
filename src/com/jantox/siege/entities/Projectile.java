@@ -4,6 +4,9 @@ import java.awt.Color;
 
 import com.jantox.siege.Item;
 import com.jantox.siege.colsys.Circle;
+import com.jantox.siege.entities.monsters.Skeleton;
+import com.jantox.siege.entities.monsters.Spawner;
+import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.particles.ColorParticle;
@@ -102,7 +105,7 @@ public class Projectile extends Entity implements Item {
 
 	@Override
 	public int onItemUse() {
-		return 0;
+		return 1;
 	}
 
 	@Override

@@ -14,7 +14,7 @@ import com.jantox.siege.entities.Decoration;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Fence;
 import com.jantox.siege.entities.Gate;
-import com.jantox.siege.entities.Spawner;
+import com.jantox.siege.entities.monsters.Spawner;
 import com.jantox.siege.gfx.Sprite.Animation;
 import com.jantox.siege.math.Vector2D;
 

@@ -81,10 +81,7 @@ public class Store {
 	}
 	
 	public void update() {
-		int cash = DungeonGame.coins;
-		if(UserInput.space) {
-			DungeonGame.coins -= 1;
-		}
+		
 	}
 	
 	public void render(Renderer renderer) {
@@ -92,17 +89,21 @@ public class Store {
 		renderer.setColor(Color.BLACK);
 		renderer.drawText(name, new Vector2D(300, 75));
 		
-		Vector2D itempos = new Vector2D(50 + 75, 50 + 60);
+		Vector2D itempos = new Vector2D(50 + 65, 50 + 60);
 		int t = 0;
 		for(Item i : items) {
 			renderer.setColor(Color.BLACK);
-			renderer.drawRect(new Rectangle(itempos.getX(), itempos.getY(), 32, 32));
-			renderer.setColor(Color.WHITE);
+			//renderer.drawRect(new Rectangle(itempos.getX(), itempos.getY(), 32, 32));
+			//renderer.setColor(Color.WHITE);
 			renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
 			renderer.drawSprite(item_sprites[this.getItemTypeOf(i).ordinal()], itempos, false);
-			renderer.drawText(amounts.get(t) + "", new Vector2D(itempos.x + 25, itempos.y + 32));
+			renderer.drawText(amounts.get(t) + "", new Vector2D(itempos.x - 3, itempos.y + 7));
 			itempos.x += 50;
 			t++;
+			if(t >= 10) {
+				itempos.x = 50 + 65;
+				itempos.y += 50;
+			}
 		}
 	}
 	
@@ -144,6 +145,10 @@ public class Store {
 		}
 		
 		return null;
+	}
+
+	public void buy() {
+		DungeonGame.coins--;
 	}
 	
 }

@@ -1,6 +1,6 @@
 package com.jantox.siege;
 
-import com.jantox.siege.entities.Spawner;
+import com.jantox.siege.entities.monsters.Spawner;
 
 public class MasterSpawner {
 	

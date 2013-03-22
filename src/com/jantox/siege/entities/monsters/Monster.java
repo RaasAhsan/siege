@@ -1,6 +1,9 @@
-package com.jantox.siege.entities;
+package com.jantox.siege.entities.monsters;
 
 import com.jantox.siege.MasterSpawner;
+import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.Living;
+import com.jantox.siege.entities.Weapon;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;

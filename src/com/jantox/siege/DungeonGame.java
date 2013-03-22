@@ -46,7 +46,7 @@ public class DungeonGame extends Canvas implements Runnable {
 		offscreen = new BufferedImage((int) 700, (int) 500, BufferedImage.TYPE_INT_RGB);
 		offscrgfx = offscreen.getGraphics();
 		
-		this.addKeyListener((ui = new UserInput()));
+		this.addKeyListener((ui = new UserInput(this)));
 		this.addMouseListener(ui);
 		this.addMouseMotionListener(ui);
 		Assets.init();

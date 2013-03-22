@@ -21,9 +21,9 @@ import com.jantox.siege.entities.NPC;
 import com.jantox.siege.entities.Player;
 import com.jantox.siege.entities.Projectile;
 import com.jantox.siege.entities.SentryGun;
-import com.jantox.siege.entities.Spawner;
 import com.jantox.siege.entities.Tree;
 import com.jantox.siege.entities.Entity.entity_type;
+import com.jantox.siege.entities.monsters.Spawner;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Camera;
@@ -34,7 +34,7 @@ import com.jantox.siege.scripts.Assets;
 
 public class Map {
 	
-	private static Random rand = new Random(2343);
+	private static Random rand = new Random(System.currentTimeMillis());
 	
 	private Vector2D size;
 	
@@ -53,7 +53,7 @@ public class Map {
 	
 	public Vector2D pspawn;
 	
-	private Store currentstore;
+	public Store currentstore;
 	
 	public Map() {
 		entities = new ArrayList<Entity>();
@@ -411,7 +411,7 @@ public class Map {
 	}
 
 	public ControlPoint getRandomControlPoint() {
-		int index = Entity.rand.nextInt(5);
+		int index = rand.nextInt(5);
 		
 		List<ControlPoint> acp = new ArrayList<ControlPoint>();
 		for(Entity e: entities) {

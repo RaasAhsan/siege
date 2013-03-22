@@ -8,6 +8,8 @@ import javax.imageio.ImageIO;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.colsys.CollisionSystem;
 import com.jantox.siege.entities.Entity.entity_type;
+import com.jantox.siege.entities.monsters.Skeleton;
+import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;

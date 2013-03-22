@@ -6,6 +6,9 @@ import java.util.Random;
 import com.jantox.siege.Map;
 import com.jantox.siege.colsys.CollisionMask;
 import com.jantox.siege.colsys.CollisionOwner;
+import com.jantox.siege.entities.monsters.Skeleton;
+import com.jantox.siege.entities.monsters.Spawner;
+import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
@@ -21,7 +24,7 @@ public abstract class Entity implements CollisionOwner {
 	
 	public static int ticks;
 	public static Map map;
-	public static Random rand = new Random((int) (Math.random() * 123243));
+	public static Random rand = new Random(System.currentTimeMillis() * System.nanoTime());
 	
 	public Vector2D pos;
 	protected int status;

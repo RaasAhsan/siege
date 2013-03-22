@@ -31,17 +31,17 @@ public class Dungeon implements ActionListener {
 		menu.setLayout(null);
 		
 		JButton play = new JButton("Play");
-		play.setBounds(350 - 75, 320, 150, 40);
+		play.setBounds(350 - 75, 320 - 20, 150, 40);
 		play.addActionListener(this);
 		
 		JButton multi = new JButton("Online");
-		multi.setBounds(350 - 75, 365, 150, 40);
+		multi.setBounds(350 - 75, 365 - 20, 150, 40);
 		
 		JButton help = new JButton("Help");
-		help.setBounds(350 - 75, 410, 150, 40);
+		help.setBounds(350 - 75, 410 - 20, 150, 40);
 		
 		JButton quit = new JButton("Quit");
-		quit.setBounds(350 - 75, 455, 150, 40);
+		quit.setBounds(350 - 75, 455 - 20, 150, 40);
 		
 		menu.add(play);
 		menu.add(multi);

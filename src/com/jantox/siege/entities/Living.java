@@ -2,6 +2,8 @@ package com.jantox.siege.entities;
 
 import com.jantox.siege.Dropper;
 import com.jantox.siege.MasterSpawner;
+import com.jantox.siege.entities.monsters.Skeleton;
+import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.math.Vector2D;
 
 public abstract class Living extends Entity implements Dropper {
@@ -16,10 +18,12 @@ public abstract class Living extends Entity implements Dropper {
 	}
 	
 	public void update() {
-		if(this.isDead())  {
+		if(this.isDead() && !expired)  {
 			expired = true;
 			if(this instanceof Zombie || this instanceof Skeleton) {
+				System.out.println("Killed a monster!");
 				MasterSpawner.CURRENT_MONSTERS--;
+				MasterSpawner.MONSTERS_KILLED ++;
 			}
 			this.drop(rand.nextInt(5000));
 			for(int i = 0; i < 50; i++) {

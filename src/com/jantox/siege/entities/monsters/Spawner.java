@@ -1,4 +1,4 @@
-package com.jantox.siege.entities;
+package com.jantox.siege.entities.monsters;
 
 import java.util.Random;
 
@@ -6,6 +6,8 @@ import com.jantox.siege.Map;
 import com.jantox.siege.MasterSpawner;
 import com.jantox.siege.colsys.AABB;
 import com.jantox.siege.colsys.Line;
+import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.Living;
 import com.jantox.siege.entities.Entity.entity_type;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
@@ -41,8 +43,10 @@ public class Spawner extends Living {
 	public void update() {
 		super.update();
 		
-		if(health <= 0)
+		if(health <= 0) {
 			MasterSpawner.CURRENT_SPAWNERS--;
+			this.expired = true;
+		}
 		
 		timeSinceLast++;
 		
@@ -57,6 +61,7 @@ public class Spawner extends Living {
 						sps.multiply(40 + Entity.rand.nextGaussian() * 128);
 						sps.add(pos.copy());
 						this.spawn(entity_type.PLAYER, sps, rand);
+						MasterSpawner.CURRENT_MONSTERS++;
 						System.out.println("Monsters Alive: " + MasterSpawner.CURRENT_MONSTERS);
 					}
 				}

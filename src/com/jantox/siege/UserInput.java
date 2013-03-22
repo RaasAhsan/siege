@@ -22,7 +22,11 @@ public class UserInput implements KeyListener, MouseMotionListener, MouseListene
 	
 	private HashMap<Integer, Integer> map;
 	
-	public UserInput() {
+	private DungeonGame dg;
+	
+	public UserInput(DungeonGame dg) {
+		this.dg = dg;
+		
 		map = new HashMap<Integer, Integer>();
 		
 		this.map(0, KeyEvent.VK_UP);
@@ -49,6 +53,9 @@ public class UserInput implements KeyListener, MouseMotionListener, MouseListene
 			right = true;
 		} else if(ke.getKeyCode() == KeyEvent.VK_SPACE) {
 			space = true;
+			if(dg.map.currentstore != null) {
+				dg.map.currentstore.buy();
+			}
 		} else if(ke.getKeyCode() == KeyEvent.VK_C) {
 			control = !control;
 		}

@@ -1,15 +1,27 @@
-package com.jantox.siege.entities;
+package com.jantox.siege.entities.monsters;
 
 import java.util.ArrayList;
 
+import com.jantox.siege.Dropper;
 import com.jantox.siege.MasterSpawner;
+import com.jantox.siege.UserInput;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.colsys.CollisionSystem;
+import com.jantox.siege.entities.AGC;
+import com.jantox.siege.entities.Barricade;
+import com.jantox.siege.entities.ControlPoint;
+import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.Gate;
+import com.jantox.siege.entities.Gem;
+import com.jantox.siege.entities.Living;
+import com.jantox.siege.entities.Player;
+import com.jantox.siege.entities.SentryGun;
+import com.jantox.siege.entities.Entity.entity_type;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;
 
-public class Skeleton extends Living {
+public class Zombie extends Living {
 	
 	Vector2D vel;
 	private Vector2D gotoline;
@@ -21,28 +33,27 @@ public class Skeleton extends Living {
 	
 	long timedone = 0;
 	
-	public Skeleton(Vector2D pos, Vector2D gotoline) {
+	public Zombie(Vector2D pos, Vector2D gotoline) {
 		super(pos);
 		this.gotoline = gotoline;
 		
-		this.colmask = new Circle(this.pos, 11);
+		this.colmask = new Circle(this.pos, 8);
 		this.health = 300;
 		
-		this.sprite = Assets.loadSprite("skeleton.png");
+		this.sprite = Assets.loadSprite("zombie.png");
 		
-		MasterSpawner.CURRENT_MONSTERS ++;
 		p = map.getRandomControlPoint();
 		
-		this.requestCollisions(entity_type.PLAYER, entity_type.GATE, entity_type.CONTROL_POINT, entity_type.BARRICADE);
+		this.requestCollisions(entity_type.PLAYER, entity_type.GATE, entity_type.CONTROL_POINT, entity_type.BARRICADE, entity_type.SENTRY_GUN, entity_type.AGC);
 	}
 
 	@Override
 	public void handleCollision(Entity e) {
-		if(e instanceof Player) {
-			Player p = (Player) e;
+		if(e instanceof Player || e instanceof SentryGun || e instanceof AGC) {
+			Living p = (Living) e;
 			if(breakTime == 0) {
 				breakTime = 20;
-				p.damage(3);
+				p.damage(5);
 			}
 			pos.subtract(vel);
 		} else if(e instanceof Gate) {
@@ -67,6 +78,7 @@ public class Skeleton extends Living {
 		
 		if(timedone > 60 * 45) {
 			this.expired = true;
+			MasterSpawner.CURRENT_MONSTERS--;
 		}
 		
 		if(breakTime > 0)
@@ -88,6 +100,23 @@ public class Skeleton extends Living {
 				gotodone = true;
 			}
 		}
+		
+
+		Vector2D pvel = new Vector2D(pos.x + vel.x, pos.y + vel.y);
+		
+		double angle = pos.angleTo(pvel);
+		angle = Math.toDegrees(angle);
+		angle -= 270 - 22.5;
+		while(angle < 0)
+			angle += 360;
+		
+		int sdir = (int) ((angle / 90));
+		if(sdir < 0)
+			sdir += 4;
+		
+		if(!sprite.isAnimation(sdir * 4, sdir * 4 + 3, 12))
+			sprite.setAnimation(sdir * 4, sdir * 4 + 3, 12);
+		sprite.update();
 		
 		ArrayList<Entity> ale = map.getEntities(entity_type.ALL);
 		for(Entity e : ale) {
@@ -112,12 +141,12 @@ public class Skeleton extends Living {
 
 	@Override
 	public void render(Renderer renderer) {
-		renderer.drawSprite(sprite, new Vector2D(pos.x - 15, pos.y - 49), true);
+		renderer.drawSprite(sprite, new Vector2D(pos.x - 32, pos.y - 49), true);
 	}
 
 	@Override
 	public void drop(int chance) {
-		map.spawn(new Gem(new Vector2D(pos.x + rand.nextGaussian() * 10, pos.y + rand.nextGaussian() * 10)));
+		map.spawn(new Gem(new Vector2D(pos.x + rand.nextGaussian() *10, pos.y + rand.nextGaussian() * 10)));
 	}
 
 }

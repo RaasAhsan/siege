@@ -1,7 +1,7 @@
 package com.jantox.siege.scripts;
 
-import com.jantox.siege.entities.Monster;
 import com.jantox.siege.entities.Weapon;
+import com.jantox.siege.entities.monsters.Monster;
 
 public class MonsterScript {
 
