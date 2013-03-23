@@ -3,6 +3,7 @@ package com.jantox.siege.entities;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.jantox.siege.Active;
 import com.jantox.siege.Map;
 import com.jantox.siege.colsys.CollisionMask;
 import com.jantox.siege.colsys.CollisionOwner;
@@ -13,7 +14,7 @@ import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
 
-public abstract class Entity implements CollisionOwner {
+public abstract class Entity implements Active, CollisionOwner {
 
 	public enum entity_type { ALL, PLAYER, TREE, SHOP, ZOMBIE, FENCE, GATE, SENTRY_GUN, CONTROL_POINT, BARRICADE, SKELETON, AGC, SPAWNER };
 	
@@ -74,10 +75,7 @@ public abstract class Entity implements CollisionOwner {
 		if(colmask != null)
 			colmask.update(pos);
 		
-		
 	}
-	
-	public abstract void render(Renderer renderer);
 	
 	public Vector2D getPosition() {
 		return pos;

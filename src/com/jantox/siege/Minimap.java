@@ -40,7 +40,7 @@ public class Minimap {
 	}
 	
 	public void render(Renderer renderer) {
-		renderer.setColor(new Color(67, 140, 34, 80));
+		renderer.setColor(new Color(67, 140, 34, 160));
 		renderer.fillCircle(pos, new Vector2D(150, 150));
 		renderer.setColor(Color.BLACK);
 		renderer.drawCircle(pos, new Vector2D(150, 150));

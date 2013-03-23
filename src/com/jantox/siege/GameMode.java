@@ -73,8 +73,15 @@ public abstract class GameMode {
 
 		@Override
 		public void update() {
-			// TODO Auto-generated method stub
-			
+			int monsters = 0;
+			for(int i = 0; i < 4; i++) {
+				if(game.map.cps[i].getOwner() == 1) {
+					monsters++;
+				}
+			}
+			if(monsters == 4) {
+				System.exit(0);
+			}
 		}
 
 		@Override

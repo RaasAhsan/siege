@@ -91,32 +91,34 @@ public class AGC extends Living {
 		if(attack == null) {
 			double angle = pos.angleTo(next_pos);
 			angle = Math.toDegrees(angle);
-			angle -= 270 - 22.5;
+			angle -= 270 - 45;
 			while(angle < 0)
 				angle += 360;
 			
-			int sdir = (int) ((angle / 45));
+			int sdir = (int) ((angle / 90));
 			if(sdir < 0)
-				sdir += 8;
+				sdir += 4;
 			
-			sprite.setAnimation(sdir, sdir, 0);
-			sprite.update();
+			if(!sprite.isAnimation(sdir * 2, sdir * 2 + 1, 12))
+				sprite.setAnimation(sdir * 2, sdir * 2 + 1, 12);
 		} else {
 			((Living)attack).damage(2);
 			
 			double angle = pos.angleTo(attack.getPosition());
 			angle = Math.toDegrees(angle);
-			angle -= 270 - 22.5;
+			angle -= 270 - 45;
 			while(angle < 0)
 				angle += 360;
 			
-			int sdir = (int) ((angle / 45));
+			int sdir = (int) ((angle / 90));
 			if(sdir < 0)
-				sdir += 8;
+				sdir += 4;
 			
-			sprite.setAnimation(sdir, sdir, 0);
-			sprite.update();
+			if(!sprite.isAnimation(sdir * 2, sdir * 2 + 1, 12))
+				sprite.setAnimation(sdir * 2, sdir * 2 + 1, 12);
 		}
+		
+		sprite.update();
 	}
 	
 	@Override

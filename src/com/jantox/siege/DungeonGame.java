@@ -9,6 +9,7 @@ import java.io.IOException;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Player;
 import com.jantox.siege.gfx.Renderer;
+import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.network.Client;
 import com.jantox.siege.scripts.Assets;
@@ -38,6 +39,10 @@ public class DungeonGame extends Canvas implements Runnable {
 	
 	private GameMode gamemode;
 	
+	public static int fps = 0;
+	
+	private Sprite youlost;
+	
 	public DungeonGame(boolean m) {
 		this.multiplayer = m;
 		
@@ -50,6 +55,8 @@ public class DungeonGame extends Canvas implements Runnable {
 		this.addMouseListener(ui);
 		this.addMouseMotionListener(ui);
 		Assets.init();
+		
+		youlost = Assets.loadSprite("youlost.png");
 		
 		try {
 			map = new ScriptReader().readMapScript("map.msf");
@@ -86,7 +93,7 @@ public class DungeonGame extends Canvas implements Runnable {
 		
 		final double TIME_BETWEEN_UPDATES = 1000000000 / GAME_HERTZ;
 		
-		final int MAX_UPDATES_BEFORE_RENDER = 1;
+		final int MAX_UPDATES_BEFORE_RENDER = 2;
 		double lastUpdateTime = System.nanoTime();
 		double lastRenderTime = System.nanoTime();
 
@@ -124,6 +131,7 @@ public class DungeonGame extends Canvas implements Runnable {
 					(float) ((now - lastUpdateTime) / TIME_BETWEEN_UPDATES));
 			DungeonGame.interp = interpolation;
 			this.render(offscrgfx);
+			frameCount++;
 
 			Graphics g = this.getGraphics();
 			g.drawImage(offscreen, 0, 0, this.getWidth(), this.getHeight(), 0,
@@ -135,6 +143,8 @@ public class DungeonGame extends Canvas implements Runnable {
 			// Update the frames we got.
 			int thisSecond = (int) (lastUpdateTime / 1000000000);
 			if (thisSecond > lastSecondTime) {
+				System.out.println("NEW SECOND " + thisSecond + " " + frameCount);
+	            fps = frameCount;
 				frameCount = 0;
 				lastSecondTime = thisSecond;
 			}
@@ -176,6 +186,7 @@ public class DungeonGame extends Canvas implements Runnable {
 		Renderer renderer = Renderer.create(g, map.getPlayer().getCamera());
 		map.render(renderer);
 		gamemode.render(renderer);
+		//renderer.drawSprite(youlost, new Vector2D(), false);
 	}
 	
 }

@@ -189,15 +189,6 @@ public class Map {
 		
 		pengine.render(renderer);
 		
-		
-		/*renderer.setColor(Color.WHITE);
-		
-		renderer.drawRect(new Rectangle(UserInput.x - 5, UserInput.y - 3, 10, 6));
-		renderer.drawLine(new Vector2D(-2, UserInput.y), new Vector2D(UserInput.x - 5, UserInput.y), false);
-		renderer.drawLine(new Vector2D(UserInput.x + 5, UserInput.y), new Vector2D(UserInput.x + 1000, UserInput.y), false);
-		renderer.drawLine(new Vector2D(UserInput.x, -2), new Vector2D(UserInput.x, UserInput.y - 3), false);
-		renderer.drawLine(new Vector2D(UserInput.x, UserInput.y + 3), new Vector2D(UserInput.x, 1000), false);*/
-		
 		if(currentstore == null) {
 			if(UserInput.control) {
 				controlmap.render(renderer);
@@ -248,11 +239,6 @@ public class Map {
 					renderer.setColor(new Color(50, 150, 50));
 					renderer.fillRect(cx, 480, cp.getOwnership() / (10000 / 120), 10);
 					
-					/*renderer.setColor(new Color(50, 105, 50));
-					for(int z = 0; z < cp.getOwnership() / (10000 / 120); z+=8) {
-						renderer.drawLine(new Vector2D(cx + z + 5, 480), new Vector2D(cx + z - 5, 480 + 10), false);
-					}*/
-					
 					renderer.setColor(Color.BLACK);
 					renderer.drawRect(new Rectangle(cx, 480, 120, 10));
 					
@@ -267,6 +253,9 @@ public class Map {
 		} else {
 			currentstore.render(renderer);
 		}
+		
+		renderer.setColor(Color.BLACK);
+		renderer.drawText("FPS: " + DungeonGame.fps, new Vector2D(5, 75));
 	}
 	
 	public void seed(int seed) {
