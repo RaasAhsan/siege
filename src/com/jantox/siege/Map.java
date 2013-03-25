@@ -60,7 +60,6 @@ public class Map {
 		
 		pengine = new ParticleEngine();
 		minimap = new Minimap(this);
-		controlmap = new ControlMap(this);
 		spawner = new MasterSpawner(this);
 	}
 	
@@ -81,6 +80,8 @@ public class Map {
 				cps[cpc++] = (ControlPoint) e;
 			}
 		}
+		
+		controlmap = new ControlMap(this, player.input);
 	}
 	
 	public void update() {
@@ -215,8 +216,7 @@ public class Map {
 					hx += 16;
 				}
 				
-				renderer.setColor(Color.GREEN);
-				renderer.drawText("Gems: " + DungeonGame.coins, new Vector2D(5, 55));
+				
 				
 				minimap.render(renderer);
 				
@@ -253,6 +253,9 @@ public class Map {
 		} else {
 			currentstore.render(renderer);
 		}
+		
+		renderer.setColor(Color.GREEN);
+		renderer.drawText("Gems: " + DungeonGame.coins, new Vector2D(5, 55));
 		
 		renderer.setColor(Color.BLACK);
 		renderer.drawText("FPS: " + DungeonGame.fps, new Vector2D(5, 75));

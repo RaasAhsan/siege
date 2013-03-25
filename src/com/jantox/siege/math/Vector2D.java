@@ -73,5 +73,10 @@ public class Vector2D {
 	public double angleTo(Vector2D pos) {
 		return Math.atan2(pos.y - y, pos.x - x);
 	}
+
+	public void divide(double d) {
+		x /= d;
+		y /= d;
+	}
 	
 }

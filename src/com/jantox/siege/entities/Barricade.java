@@ -77,7 +77,7 @@ public class Barricade extends Living implements Item {
 			held = false;
 		}
 		
-		return 0;
+		return 1;
 	}
 
 	@Override

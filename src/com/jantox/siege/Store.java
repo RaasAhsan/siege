@@ -5,10 +5,14 @@ import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import com.jantox.siege.colsys.AABB;
+import com.jantox.siege.colsys.Circle;
+import com.jantox.siege.colsys.CollisionSystem;
 import com.jantox.siege.entities.Axe;
 import com.jantox.siege.entities.Barricade;
 import com.jantox.siege.entities.Blaster;
 import com.jantox.siege.entities.Bow;
+import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Hammer;
 import com.jantox.siege.entities.Log;
 import com.jantox.siege.entities.Potion;
@@ -28,21 +32,26 @@ public class Store {
 		
 	}
 	
+	int breaktime = 0;
+	int selected = 5;
+	
 	public Sprite[] item_sprites = new Sprite[16];
 	
 	private String name;
 	private Sprite store;
+	private Sprite selecti;
 	
-	private ArrayList<Item> items;
-	private ArrayList<Integer> amounts;
+	private ArrayList<StoreItem> items;
+	
+	private Vector2D itmstart = new Vector2D(50 + 65, 50 + 60);
 	
 	public Store(String name) {
 		this.name = name;
 		
-		items = new ArrayList<Item>();
-		amounts = new ArrayList<Integer>();
+		items = new ArrayList<StoreItem>();
 		
 		this.store = Assets.loadSprite("interface_store.png");
+		selecti = Assets.loadSprite("inv_select.png");
 		
 		item_sprites[ItemType.WOOD.ordinal()] = Assets.loadSprite("log.png");
 		item_sprites[ItemType.BOW.ordinal()] = Assets.loadSprite("bow.png");
@@ -76,12 +85,25 @@ public class Store {
 	}
 	
 	public void addItem(Item i, int amount) {
-		items.add(i);
-		amounts.add(amount);
+		items.add(new StoreItem(i, amount, itmstart.copy()));
+		itmstart.x += 50;
+		if(items.size() % 10 == 0) {
+			itmstart.x = 115;
+			itmstart.y += 50;
+		}
 	}
 	
 	public void update() {
+		if(breaktime > 0)
+			breaktime --;
 		
+		Vector2D mouse = new Vector2D(Entity.map.getPlayer().input.x, Entity.map.getPlayer().input.y);
+		for(StoreItem si : items) {
+			if (CollisionSystem.collides(new Circle(new Vector2D(si.itempos.x + 16, si.itempos.y + 16), 16),
+					new Circle(mouse,3))) {
+				selected = items.indexOf(si);
+			}
+		}
 	}
 	
 	public void render(Renderer renderer) {
@@ -89,21 +111,18 @@ public class Store {
 		renderer.setColor(Color.BLACK);
 		renderer.drawText(name, new Vector2D(300, 75));
 		
-		Vector2D itempos = new Vector2D(50 + 65, 50 + 60);
 		int t = 0;
-		for(Item i : items) {
-			renderer.setColor(Color.BLACK);
-			//renderer.drawRect(new Rectangle(itempos.getX(), itempos.getY(), 32, 32));
-			//renderer.setColor(Color.WHITE);
-			renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
-			renderer.drawSprite(item_sprites[this.getItemTypeOf(i).ordinal()], itempos, false);
-			renderer.drawText(amounts.get(t) + "", new Vector2D(itempos.x - 3, itempos.y + 7));
-			itempos.x += 50;
-			t++;
-			if(t >= 10) {
-				itempos.x = 50 + 65;
-				itempos.y += 50;
+		for(StoreItem i : items) {
+			Vector2D itempos = i.itempos;
+			if(selected == t) {
+				renderer.setColor(Color.BLACK);
+				renderer.drawRect(new Rectangle(itempos.getX() - 5, itempos.getY() - 3, 32, 32));
 			}
+			renderer.setColor(Color.WHITE);
+			renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
+			renderer.drawSprite(item_sprites[this.getItemTypeOf(i.i).ordinal()], itempos, false);
+			renderer.drawText(i.amount + "", new Vector2D(itempos.x - 3, itempos.y + 7));
+			t++;
 		}
 	}
 	
@@ -148,7 +167,26 @@ public class Store {
 	}
 
 	public void buy() {
-		DungeonGame.coins--;
+		if(breaktime <= 0) {
+			DungeonGame.coins--;
+			breaktime = 5;
+			items.get(selected).amount--;
+			Entity.map.getPlayer().getInventory().addItem(new Barricade(null, new Vector2D()));
+		}
+	}
+	
+	public class StoreItem {
+		
+		Item i;
+		int amount;
+		Vector2D itempos;
+		
+		public StoreItem(Item i, int amount, Vector2D pos) {
+			this.i = i;
+			this.amount = amount;
+			this.itempos = pos;
+		}
+		
 	}
 	
 }

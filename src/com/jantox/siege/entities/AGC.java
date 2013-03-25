@@ -18,7 +18,7 @@ import com.jantox.siege.scripts.Assets;
 // autonomous ground control
 public class AGC extends Living {
 	
-	private Vector2D next_pos;
+	public Vector2D next_pos;
 	private Vector2D velocity;
 	
 	private Entity attack = null;

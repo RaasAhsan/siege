@@ -16,7 +16,7 @@ import com.jantox.siege.scripts.Assets;
 
 public class Player extends Living {
 
-	UserInput input;
+	public UserInput input;
 	
 	Vector2D prevpos;
 	
