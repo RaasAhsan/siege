@@ -4,6 +4,8 @@ import com.jantox.siege.Item;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;
+import com.jantox.siege.sfx.Sound;
+import com.jantox.siege.sfx.Sounds;
 
 public class Potion extends Entity implements Item {
 
@@ -33,6 +35,7 @@ public class Potion extends Entity implements Item {
 
 	@Override
 	public int onItemUse() {
+		Sounds.play(new Sound.Drink());
 		p.potion = 3600;
 		return 0;
 	}

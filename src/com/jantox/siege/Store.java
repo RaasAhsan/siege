@@ -24,6 +24,8 @@ import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;
+import com.jantox.siege.sfx.Sound;
+import com.jantox.siege.sfx.Sounds;
 
 public class Store {
 	
@@ -102,7 +104,10 @@ public class Store {
 		for(StoreItem si : items) {
 			if (CollisionSystem.collides(new Circle(new Vector2D(si.itempos.x + 16, si.itempos.y + 16), 16),
 					new Circle(mouse,3))) {
-				selected = items.indexOf(si);
+				if(selected != items.indexOf(si)) {
+					selected = items.indexOf(si);
+					Sounds.play(new Sound.Select());
+				}
 			}
 		}
 	}
@@ -170,6 +175,7 @@ public class Store {
 	public void buy() {
 		if(breaktime <= 0) {
 			DungeonGame.coins--;
+			Sounds.play(new Sound.Place());
 			breaktime = 5;
 			items.get(selected).amount--;
 			Entity.map.getPlayer().getInventory().addItem(Inventory.getItemOfType(Inventory.getItemTypeOf(this.items.get(selected).i)));

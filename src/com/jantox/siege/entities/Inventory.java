@@ -87,7 +87,7 @@ public class Inventory extends Entity {
 		}
 		if(Keyboard.space || Keyboard.left_mouse) {
 			if(select != null) {
-				if(rest <= 0) {
+				if(rest <= 0 && map.currentstore == null) {
 					int res = select.onItemUse();
 					rest = select.getRest();
 					
