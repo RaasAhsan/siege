@@ -3,7 +3,7 @@ package com.jantox.siege.entities;
 import java.awt.image.RescaleOp;
 
 import com.jantox.siege.Item;
-import com.jantox.siege.UserInput;
+import com.jantox.siege.Keyboard;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.entities.Inventory.ItemType;
 import com.jantox.siege.gfx.Renderer;
@@ -41,7 +41,7 @@ public class Barricade extends Living implements Item {
 			renderer.drawSprite(sprite, new Vector2D(pos.x - 32, pos.y - 40), true);
 		
 		if(held) {
-			Vector2D pvel = new Vector2D(UserInput.x + map.getCamera().pos.x, UserInput.y + map.getCamera().pos.y);
+			Vector2D pvel = new Vector2D(Keyboard.x + map.getCamera().pos.x, Keyboard.y + map.getCamera().pos.y);
 			
 			this.pos = pvel.copy();
 			
@@ -68,7 +68,7 @@ public class Barricade extends Living implements Item {
 
 	@Override
 	public int onItemUse() {		
-		Vector2D pvel = new Vector2D(UserInput.x + map.getCamera().pos.x, UserInput.y + map.getCamera().pos.y);
+		Vector2D pvel = new Vector2D(Keyboard.x + map.getCamera().pos.x, Keyboard.y + map.getCamera().pos.y);
 		
 		if(map.isFree(pvel, 5)) {
 			this.pos = pvel.copy();

@@ -21,7 +21,7 @@ public class DungeonGame extends Canvas implements Runnable {
 	public static int coins = 100;
 	
 	private Thread thread;
-	private UserInput ui;
+	private Keyboard ui;
 	
 	private BufferedImage offscreen;
 	private Graphics offscrgfx;
@@ -51,7 +51,7 @@ public class DungeonGame extends Canvas implements Runnable {
 		offscreen = new BufferedImage((int) 700, (int) 500, BufferedImage.TYPE_INT_RGB);
 		offscrgfx = offscreen.getGraphics();
 		
-		this.addKeyListener((ui = new UserInput(this)));
+		this.addKeyListener((ui = new Keyboard(this)));
 		this.addMouseListener(ui);
 		this.addMouseMotionListener(ui);
 		Assets.init();

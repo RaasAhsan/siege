@@ -26,7 +26,7 @@ public class AGC extends Living {
 	public AGC(Vector2D pos) {
 		super(pos);
 		
-		this.health = 1000;
+		this.health = 50;
 		this.colmask = new Circle(pos, 7);
 		
 		this.requestCollisions(entity_type.FENCE, entity_type.GATE, entity_type.BARRICADE);
@@ -44,6 +44,8 @@ public class AGC extends Living {
 	}
 
 	public void update() {
+		super.update();
+		
 		this.colmask.update(pos);
 		
 		if(attack == null)
@@ -119,6 +121,11 @@ public class AGC extends Living {
 		}
 		
 		sprite.update();
+	}
+	
+	@Override
+	public void damage(int a) {
+		health -= a;
 	}
 	
 	@Override

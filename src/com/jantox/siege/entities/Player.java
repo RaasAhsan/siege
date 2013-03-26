@@ -3,7 +3,7 @@ package com.jantox.siege.entities;
 import java.awt.Color;
 
 import com.jantox.siege.Item;
-import com.jantox.siege.UserInput;
+import com.jantox.siege.Keyboard;
 import com.jantox.siege.colsys.AABB;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.gfx.Renderer;
@@ -16,7 +16,7 @@ import com.jantox.siege.scripts.Assets;
 
 public class Player extends Living {
 
-	public UserInput input;
+	public Keyboard input;
 	
 	Vector2D prevpos;
 	
@@ -28,7 +28,7 @@ public class Player extends Living {
 	
 	private Inventory inventory;
 	
-	public Player(Vector2D pos, UserInput ui, Vector2D sdim) {
+	public Player(Vector2D pos, Keyboard ui, Vector2D sdim) {
 		super(pos);
 		
 		potion = 0;
@@ -79,17 +79,17 @@ public class Player extends Living {
 	@Override
 	public void update() {
 		prevpos = pos.copy();
-		if(UserInput.up) {
+		if(Keyboard.up) {
 			pos.y-=1;
 			direction = UP;
-		} else if(UserInput.down) {
+		} else if(Keyboard.down) {
 			pos.y+=1;
 			direction = DOWN;
 		} 
-		if(UserInput.right) {
+		if(Keyboard.right) {
 			pos.x += 1;
 			direction = RIGHT;
-		} else if(UserInput.left) {
+		} else if(Keyboard.left) {
 			pos.x -= 1;
 			direction = LEFT;
 		}
@@ -107,7 +107,7 @@ public class Player extends Living {
 			}
 		}
 		
-		double angle = this.pos.angleTo(new Vector2D(UserInput.x + this.cam.pos.x, UserInput.y + this.cam.pos.y));
+		double angle = this.pos.angleTo(new Vector2D(Keyboard.x + this.cam.pos.x, Keyboard.y + this.cam.pos.y));
 		angle = Math.toDegrees(angle);
 		angle -= 270 - 22.5;
 		while(angle < 0)

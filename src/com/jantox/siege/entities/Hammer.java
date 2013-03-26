@@ -2,7 +2,7 @@ package com.jantox.siege.entities;
 
 import java.util.List;
 
-import com.jantox.siege.UserInput;
+import com.jantox.siege.Keyboard;
 import com.jantox.siege.entities.Inventory.ItemType;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
@@ -21,7 +21,7 @@ public class Hammer extends Weapon {
 	public void update() {
 		super.update();
 		
-		Vector2D pvel = new Vector2D(UserInput.x, UserInput.y);
+		Vector2D pvel = new Vector2D(Keyboard.x, Keyboard.y);
 		Vector2D cvel = new Vector2D(map.getPlayer().pos.x - map.getCamera().pos.x, map.getPlayer().pos.y - map.getCamera().pos.y);
 		
 		double angle = cvel.angleTo(pvel);
@@ -47,7 +47,7 @@ public class Hammer extends Weapon {
 	@Override
 	public void attack() {
 		if (((Player) owner).getInventory().containsItem(ItemType.WOOD)) {
-			Vector2D pvel = new Vector2D(UserInput.x, UserInput.y);
+			Vector2D pvel = new Vector2D(Keyboard.x, Keyboard.y);
 			Vector2D cvel = new Vector2D(this.pos.x - map.getCamera().pos.x,
 					this.pos.y - map.getCamera().pos.y - 20);
 

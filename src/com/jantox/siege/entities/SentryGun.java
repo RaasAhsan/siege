@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import com.jantox.siege.Item;
-import com.jantox.siege.UserInput;
+import com.jantox.siege.Keyboard;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.entities.Inventory.ItemType;
 import com.jantox.siege.gfx.Renderer;
@@ -25,7 +25,7 @@ public class SentryGun extends Living implements Item {
 	public SentryGun(Player p, Vector2D pos) {
 		super(pos);
 		
-		this.health = 10;
+		this.health = 50;
 		this.colmask = new Circle(pos, 15);
 		
 		try {
@@ -47,6 +47,7 @@ public class SentryGun extends Living implements Item {
 	@Override
 	public void update() {
 		super.update();
+		
 		if(!inventory) {
 			Entity e = map.getClosestMonster(this);
 			if(e != null) {
@@ -104,7 +105,7 @@ public class SentryGun extends Living implements Item {
 		}
 			
 		if(held) {
-			Vector2D pvel = new Vector2D(UserInput.x + map.getCamera().pos.x, UserInput.y + map.getCamera().pos.y);
+			Vector2D pvel = new Vector2D(Keyboard.x + map.getCamera().pos.x, Keyboard.y + map.getCamera().pos.y);
 			
 			this.pos = pvel.copy();
 			
@@ -121,7 +122,7 @@ public class SentryGun extends Living implements Item {
 	
 	@Override
 	public void damage(int a) {
-		
+		health -= a;
 	}
 	
 	@Override
@@ -137,7 +138,7 @@ public class SentryGun extends Living implements Item {
 
 	@Override
 	public int onItemUse() {
-		Vector2D pvel = new Vector2D(UserInput.x + map.getCamera().pos.x, UserInput.y + map.getCamera().pos.y);
+		Vector2D pvel = new Vector2D(Keyboard.x + map.getCamera().pos.x, Keyboard.y + map.getCamera().pos.y);
 		
 		if(map.isFree(pvel, 15)) {
 			this.pos = pvel.copy();

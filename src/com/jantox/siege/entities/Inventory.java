@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 
 import com.jantox.siege.Item;
-import com.jantox.siege.UserInput;
+import com.jantox.siege.Keyboard;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
@@ -13,7 +13,7 @@ import com.jantox.siege.scripts.Assets;
 
 public class Inventory extends Entity {
 	
-	enum ItemType {
+	public enum ItemType {
 
 		WOOD, BOW, ARROW, BLASTER, AXE, HAMMER, BARRICADE, SWORD, SENTRY_GUN, POTION_HEALTH, POTION_SWIFT, POTION_STRENGTH, POTION_WEALTH
 		
@@ -85,7 +85,7 @@ public class Inventory extends Entity {
 		if(select != null) {
 			select.update();
 		}
-		if(UserInput.space || UserInput.left_mouse) {
+		if(Keyboard.space || Keyboard.left_mouse) {
 			if(select != null) {
 				if(rest <= 0) {
 					int res = select.onItemUse();
@@ -206,7 +206,7 @@ public class Inventory extends Entity {
 		
 	}
 	
-	public ItemType getItemTypeOf(Item i) {
+	public static ItemType getItemTypeOf(Item i) {
 		if(i instanceof Log) {
 			return ItemType.WOOD;
 		} else if(i instanceof Projectile) {
@@ -239,6 +239,23 @@ public class Inventory extends Entity {
 				return ItemType.POTION_WEALTH;
 		}
 		
+		return null;
+	}
+	
+	public static Item getItemOfType(ItemType it) {
+		if(it == ItemType.ARROW) {
+			return new Projectile(new Vector2D(0, 0), new Vector2D(0, 0), 0, Projectile.ARROW);
+		} else if(it == ItemType.BARRICADE) {
+			return new Barricade(Entity.map.getPlayer(), new Vector2D(0, 0));
+		} else if(it == ItemType.POTION_HEALTH) {
+			return new Potion(Entity.map.getPlayer(), Potion.POTION_HEALTH);
+		} else if(it == ItemType.POTION_STRENGTH) {
+			return new Potion(Entity.map.getPlayer(), Potion.POTION_STRENGTH);
+		} else if(it == ItemType.POTION_SWIFT) {
+			return new Potion(Entity.map.getPlayer(), Potion.POTION_SWIFT);
+		} else if(it == ItemType.BOW) {
+			return new Bow(Entity.map.getPlayer());
+		}
 		return null;
 	}
 

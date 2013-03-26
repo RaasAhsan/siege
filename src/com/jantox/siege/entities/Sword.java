@@ -3,7 +3,7 @@ package com.jantox.siege.entities;
 import java.util.List;
 
 import com.jantox.siege.Item;
-import com.jantox.siege.UserInput;
+import com.jantox.siege.Keyboard;
 import com.jantox.siege.entities.monsters.Skeleton;
 import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.Renderer;
@@ -25,7 +25,7 @@ public class Sword extends Weapon implements Item {
 
 	@Override
 	public void attack() {
-		Vector2D pvel = new Vector2D(UserInput.x, UserInput.y);
+		Vector2D pvel = new Vector2D(Keyboard.x, Keyboard.y);
 		Vector2D cvel = new Vector2D(map.getPlayer().pos.x - map.getCamera().pos.x, map.getPlayer().pos.y - map.getCamera().pos.y);
 
 		double angle = cvel.angleTo(pvel);

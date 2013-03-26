@@ -78,5 +78,9 @@ public class Vector2D {
 		x /= d;
 		y /= d;
 	}
+
+	public void debug() {
+		System.out.println(x + " " + y);
+	}
 	
 }

@@ -17,6 +17,7 @@ import com.jantox.siege.entities.Barricade;
 import com.jantox.siege.entities.ControlPoint;
 import com.jantox.siege.entities.Decoration;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.Living;
 import com.jantox.siege.entities.NPC;
 import com.jantox.siege.entities.Player;
 import com.jantox.siege.entities.Projectile;
@@ -42,7 +43,7 @@ public class Map {
 	
 	private ParticleEngine pengine;
 	private Minimap minimap;
-	private ControlMap controlmap;
+	public ControlMap controlmap;
 	private MasterSpawner spawner;
 	
 	private Player player;
@@ -136,7 +137,7 @@ public class Map {
 		
 		pengine.update();
 		
-		if(UserInput.control) {
+		if(Keyboard.control) {
 			controlmap.update();
 		}
 		
@@ -191,7 +192,7 @@ public class Map {
 		pengine.render(renderer);
 		
 		if(currentstore == null) {
-			if(UserInput.control) {
+			if(Keyboard.control) {
 				controlmap.render(renderer);
 			} else {
 				int hx = 10;
@@ -312,6 +313,7 @@ public class Map {
 	
 	public void setSize(Vector2D size) {
 		this.size = size;
+		System.out.println(size.x + " " + size.y);
 	}
 	
 	public Vector2D getSize() {

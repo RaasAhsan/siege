@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 import com.jantox.siege.entities.Entity;
 
-public class UserInput implements KeyListener, MouseMotionListener, MouseListener {
+public class Keyboard implements KeyListener, MouseMotionListener, MouseListener {
 	
 	public static boolean up, down, left, right, control;
 	public static boolean space;
@@ -17,6 +17,7 @@ public class UserInput implements KeyListener, MouseMotionListener, MouseListene
 	public static int x, y;
 	
 	public static boolean left_mouse;
+	public static boolean right_mouse;
 	
 	public boolean inputs[] = new boolean[16];
 	
@@ -24,7 +25,7 @@ public class UserInput implements KeyListener, MouseMotionListener, MouseListene
 	
 	private DungeonGame dg;
 	
-	public UserInput(DungeonGame dg) {
+	public Keyboard(DungeonGame dg) {
 		this.dg = dg;
 		
 		map = new HashMap<Integer, Integer>();
@@ -125,14 +126,31 @@ public class UserInput implements KeyListener, MouseMotionListener, MouseListene
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
+	public void mousePressed(MouseEvent me) {
 		Entity.rand.nextInt();
-		left_mouse = true;
+		
+		switch (me.getButton()) {
+		case MouseEvent.BUTTON1:
+			left_mouse = true;
+			break;
+		case MouseEvent.BUTTON3:
+			right_mouse = true;
+			break;
+		}
+		
+		dg.map.controlmap.click();
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		left_mouse = false;
+	public void mouseReleased(MouseEvent me) {
+		switch (me.getButton()) {
+		case MouseEvent.BUTTON1:
+			left_mouse = false;
+			break;
+		case MouseEvent.BUTTON3:
+			right_mouse = false;
+			break;
+		}
 	}
 
 }

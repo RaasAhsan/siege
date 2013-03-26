@@ -14,6 +14,7 @@ import com.jantox.siege.entities.Blaster;
 import com.jantox.siege.entities.Bow;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Hammer;
+import com.jantox.siege.entities.Inventory;
 import com.jantox.siege.entities.Log;
 import com.jantox.siege.entities.Potion;
 import com.jantox.siege.entities.Projectile;
@@ -116,12 +117,12 @@ public class Store {
 			Vector2D itempos = i.itempos;
 			if(selected == t) {
 				renderer.setColor(Color.BLACK);
-				renderer.drawRect(new Rectangle(itempos.getX() - 5, itempos.getY() - 3, 32, 32));
+				renderer.drawRect(new Rectangle(itempos.getX(), itempos.getY() - 3, 32, 32));
 			}
 			renderer.setColor(Color.WHITE);
 			renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
 			renderer.drawSprite(item_sprites[this.getItemTypeOf(i.i).ordinal()], itempos, false);
-			renderer.drawText(i.amount + "", new Vector2D(itempos.x - 3, itempos.y + 7));
+			//renderer.drawText(i.amount + "", new Vector2D(itempos.x - 3, itempos.y + 7));
 			t++;
 		}
 	}
@@ -171,7 +172,7 @@ public class Store {
 			DungeonGame.coins--;
 			breaktime = 5;
 			items.get(selected).amount--;
-			Entity.map.getPlayer().getInventory().addItem(new Barricade(null, new Vector2D()));
+			Entity.map.getPlayer().getInventory().addItem(Inventory.getItemOfType(Inventory.getItemTypeOf(this.items.get(selected).i)));
 		}
 	}
 	

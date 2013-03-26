@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.jantox.siege.MasterSpawner;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.colsys.CollisionSystem;
+import com.jantox.siege.entities.AGC;
 import com.jantox.siege.entities.Barricade;
 import com.jantox.siege.entities.ControlPoint;
 import com.jantox.siege.entities.Entity;
@@ -12,6 +13,8 @@ import com.jantox.siege.entities.Gate;
 import com.jantox.siege.entities.Gem;
 import com.jantox.siege.entities.Living;
 import com.jantox.siege.entities.Player;
+import com.jantox.siege.entities.Projectile;
+import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Entity.entity_type;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
@@ -26,6 +29,9 @@ public class Skeleton extends Living {
 	int breakTime = 0;
 	
 	ControlPoint p;
+	
+	Entity attack = null;
+	int breaktime = 0;
 	
 	long timedone = 0;
 	
@@ -72,6 +78,9 @@ public class Skeleton extends Living {
 		
 		timedone++;
 		
+		if(breaktime > 0)
+			breaktime--;
+		
 		if(timedone > 60 * 45) {
 			this.expired = true;
 			MasterSpawner.CURRENT_MONSTERS--;
@@ -110,10 +119,40 @@ public class Skeleton extends Living {
 					vel = nd;
 				}
 			}
+			
+			if (e instanceof SentryGun || e instanceof AGC || e instanceof Player) {
+				if(this.distanceSquared(e) <= 100 * 100) {
+					attack = e;
+					break;
+				}
+			}
 		}
 		vel.x /= 3;
 		vel.y /= 3;
 
+		if(attack != null)
+			if(((Living)attack).isDead()) {
+				attack = null;
+			}
+		
+		if(attack != null) {
+			if(breaktime <= 0) {
+				breaktime = 100;
+				
+				Vector2D avel = new Vector2D(attack.pos.x, attack.pos.y);
+				Vector2D cvel = new Vector2D(this.pos.x, this.pos.y - 20);
+
+				double ang = cvel.angleTo(avel);
+
+				double cx = Math.cos(ang);
+				double cy = Math.sin(ang);
+				Vector2D vel = new Vector2D(cx, cy);
+
+				Vector2D np = new Vector2D(this.pos.x, this.pos.y);
+				map.spawn(new EnemyShot(np, vel, ang, Projectile.BLAST));
+			}
+		}
+		
 		pos.add(vel);
 		colmask.update(pos);
 	}

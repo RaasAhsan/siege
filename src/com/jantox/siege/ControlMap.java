@@ -37,14 +37,14 @@ public class ControlMap {
 	private Sprite flag;
 	private Sprite agcselect;
 	
-	private UserInput input;
+	private Keyboard input;
 	
 	private List<Entity> drones;
 	private List<Entity> rdrones;
 	
 	private Entity selected = null;
 	
-	public ControlMap(Map map, UserInput input) {
+	public ControlMap(Map map, Keyboard input) {
 		this.map = map;
 		numbers = new BitmapFont();
 		icons = Assets.loadSprite("cmap_icons.png");
@@ -75,25 +75,6 @@ public class ControlMap {
 				}
 			}
 		}
-		
-		Vector2D mouse = new Vector2D(map.getPlayer().input.x, map.getPlayer().input.y);
-		if(map.getPlayer().input.left_mouse) {
-			int i = 0;
-			for(Entity e : drones) {
-				if(CollisionSystem.collides(new Circle(mouse, 5), new Circle(e.pos, 5))) {
-					selected = ((AGC)this.rdrones.get(i));
-					break;
-				} else {
-					if(selected != null) {
-						Vector2D center = new Vector2D(map.getSize().x / 2, map.getSize().y / 2);
-						//center.x *= 32;
-						//center.y *= 32;
-						((AGC)selected).next_pos = convertFromCMapPos(mouse, Math.sqrt(center.distanceSquared(selected.pos)));
-					}
-				}
-				i++;
-			}
-		}
 	}
 
 	public void render(Renderer renderer) {
@@ -113,7 +94,7 @@ public class ControlMap {
 					icons.setAnimation(3,3,0);
 				} else if(e instanceof Fence) {
 					renderer.setColor(new Color(139, 69, 69));
-					renderer.fill(new Rectangle(epos.getX() + 350, epos.getY() + 250, 2, 2), false);
+					renderer.fill(new Rectangle(epos.getX(), epos.getY(), 2, 2), false);
 					continue;
 				} else if(e instanceof AGC) {
 					icons.setAnimation(1,1,0);
@@ -128,24 +109,22 @@ public class ControlMap {
 				}
 				icons.update();
 				
-				renderer.drawSprite(icons, new Vector2D(epos.x + 350 - 16, epos.y + 250 - 16), false);
+				renderer.drawSprite(icons, new Vector2D(epos.x - 16, epos.y - 16), false);
 				if(e instanceof AGC) {
 					if(e == selected)
-						renderer.drawSprite(agcselect, new Vector2D(epos.x + 350 - 16, epos.y + 250 - 16), false);
+						renderer.drawSprite(agcselect, new Vector2D(epos.x - 16, epos.y - 16), false);
 				}
 			} else {
 				Vector2D epos = this.convertToCMapPos(e.pos);
 				
 				String cps = String.valueOf(((ControlPoint)e).getControlPointID());
-				this.numbers.render(renderer, new Vector2D( 350 + epos.x - 16, 250 + epos.y - 16), cps);
+				this.numbers.render(renderer, new Vector2D(epos.x - 16, epos.y - 16), cps);
 			}
 		}
 		
 		for(Entity e : rdrones) {
 			if(selected == e) {
 				Vector2D cpos = convertToCMapPos(((AGC)e).next_pos);
-				cpos.x += 350;
-				cpos.y += 250;
 				cpos.x -= 16;
 				cpos.y -= 16;
 				renderer.drawSprite(flag, cpos, false);
@@ -153,14 +132,14 @@ public class ControlMap {
 		}
 	}
 	
-	public Vector2D convertFromCMapPos(Vector2D mouse, double len) {
+	public Vector2D convertFromCMapPos(Vector2D mouse) {
 		Vector2D pos = mouse.copy();
-		Vector2D center = new Vector2D(map.getSize().x / 2, map.getSize().y / 2);
 		
-		//pos.divide(len / 4.5);
-		
-		//pos.multip();
-		pos.add(center);
+		pos.subtract(new Vector2D(350, 250));
+		pos.normalize();
+		pos.multiply(Math.sqrt(new Vector2D(350, 250).distanceSquared(mouse)));
+		pos.multiply(4.25);
+		pos.add(new Vector2D(map.getSize().x / 2, map.getSize().y / 2));
 		
 		return pos;
 	}
@@ -172,9 +151,35 @@ public class ControlMap {
 		epos.subtract(center);
 		epos.normalize();
 		
-		epos.multiply(Math.sqrt(center.distanceSquared(e)) / 4.5);
+		epos.multiply(Math.sqrt(center.distanceSquared(e)) / 4.25);
+		
+		epos.add(new Vector2D(350, 250));
 		
 		return epos;
+	}
+
+	public void click() {
+		Vector2D mouse = new Vector2D(map.getPlayer().input.x, map.getPlayer().input.y);
+		if(map.getPlayer().input.left_mouse) {
+			int i = 0;
+			for(Entity e : drones) {
+				if(CollisionSystem.collides(new Circle(mouse, 5), new Circle(e.pos, 5))) {
+					if(selected == null) {
+						System.out.println("hello");
+						selected = ((AGC)this.rdrones.get(i));
+						break;
+					}
+				}
+				i++;
+			}
+			if(selected != null) {
+				((AGC)selected).next_pos = convertFromCMapPos(mouse);
+			}
+		} else if(map.getPlayer().input.right_mouse) {
+			if(selected != null) {
+				selected = null;
+			}
+		}
 	}
 	
 }
