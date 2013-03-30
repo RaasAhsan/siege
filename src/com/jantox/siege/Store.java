@@ -20,6 +20,7 @@ import com.jantox.siege.entities.Potion;
 import com.jantox.siege.entities.Projectile;
 import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Sword;
+import com.jantox.siege.entities.Inventory.ItemType;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
@@ -68,7 +69,10 @@ public class Store {
 		item_sprites[ItemType.HAMMER.ordinal()] = Assets.loadSprite("hammer.png");
 		item_sprites[ItemType.BARRICADE.ordinal()] = Assets.loadSprite("item_barricade.png");
 		item_sprites[ItemType.SWORD.ordinal()] = Assets.loadSprite("item_sword.png");
-		item_sprites[ItemType.SENTRY_GUN.ordinal()] = Assets.loadSprite("log.png");
+		
+		item_sprites[ItemType.SENTRY_GUN.ordinal()] = Assets.loadSprite("sentry_gun.png");
+		item_sprites[ItemType.SENTRY_GUN.ordinal()].setAnimation(0,0,0);
+		item_sprites[ItemType.SENTRY_GUN.ordinal()].update();
 		
 		item_sprites[ItemType.POTION_HEALTH.ordinal()] = Assets.loadSprite("potions.png");
 		item_sprites[ItemType.POTION_HEALTH.ordinal()].setAnimation(0,0,0);
@@ -87,8 +91,8 @@ public class Store {
 		item_sprites[ItemType.POTION_WEALTH.ordinal()].update();
 	}
 	
-	public void addItem(Item i, int amount) {
-		items.add(new StoreItem(i, amount, itmstart.copy()));
+	public void addItem(Item i, int amount, int cost, String name) {
+		items.add(new StoreItem(i, amount, itmstart.copy(), cost, name));
 		itmstart.x += 50;
 		if(items.size() % 10 == 0) {
 			itmstart.x = 115;
@@ -126,10 +130,23 @@ public class Store {
 			}
 			renderer.setColor(Color.WHITE);
 			renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
-			renderer.drawSprite(item_sprites[this.getItemTypeOf(i.i).ordinal()], itempos, false);
-			//renderer.drawText(i.amount + "", new Vector2D(itempos.x - 3, itempos.y + 7));
+			renderer.drawSprite(item_sprites[this.getItemTypeOf(i.i).ordinal()], new Vector2D(itempos.x, itempos.y - 2), false);
+			renderer.setColor(new Color(0, 255, 255));
+			renderer.drawText(i.amount + "", new Vector2D(itempos.x - 3, itempos.y + 7));
 			t++;
 		}
+		
+		renderer.setColor(Color.GREEN);
+		renderer.drawText("You have: " + DungeonGame.coins + "cn", new Vector2D(70, 430));
+		
+		if(this.canAfford(items.get(selected).cost))
+			renderer.setColor(Color.GREEN);
+		else
+			renderer.setColor(Color.RED);
+		renderer.drawText("Item costs: " + items.get(selected).cost + "cn", new Vector2D(505, 430));
+		
+		renderer.setColor(new Color(0, 255, 255));
+		renderer.drawText("" + items.get(selected).itemname, new Vector2D(295, 430));
 	}
 	
 	public String getShopName() {
@@ -174,12 +191,20 @@ public class Store {
 
 	public void buy() {
 		if(breaktime <= 0) {
-			DungeonGame.coins--;
-			Sounds.play(new Sound.Place());
-			breaktime = 5;
-			items.get(selected).amount--;
-			Entity.map.getPlayer().getInventory().addItem(Inventory.getItemOfType(Inventory.getItemTypeOf(this.items.get(selected).i)));
+			if(this.canAfford(items.get(selected).cost)) {
+				DungeonGame.coins -= items.get(selected).cost;
+				Sounds.play(new Sound.Place());
+				breaktime = 5;
+				items.get(selected).amount--;
+				Entity.map.getPlayer().getInventory().addItem(Inventory.getItemOfType(Inventory.getItemTypeOf(this.items.get(selected).i)));
+			}
 		}
+	}
+	
+	public boolean canAfford(int cost) {
+		if(DungeonGame.coins < cost)
+			return false;
+		return true;
 	}
 	
 	public class StoreItem {
@@ -187,11 +212,15 @@ public class Store {
 		Item i;
 		int amount;
 		Vector2D itempos;
+		int cost;
+		String itemname;
 		
-		public StoreItem(Item i, int amount, Vector2D pos) {
+		public StoreItem(Item i, int amount, Vector2D pos, int cost, String itemname) {
 			this.i = i;
 			this.amount = amount;
 			this.itempos = pos;
+			this.cost = cost;
+			this.itemname = itemname;
 		}
 		
 	}

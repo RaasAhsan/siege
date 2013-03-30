@@ -29,17 +29,17 @@ public class NPC extends Entity {
 			this.sprite = Assets.loadSprite("magician.png");
 			
 			this.store = new Store("Xephus Potionry");
-			store.addItem(new Potion(Entity.map.getPlayer(), 0), 5);
-			store.addItem(new Sword(this), 3);
-			store.addItem(new Axe(this), 2);
-			store.addItem(new Hammer(this), 2);
-			store.addItem(new Potion(Entity.map.getPlayer(), 1), 34);
-			store.addItem(new Barricade(Entity.map.getPlayer(), new Vector2D()), 64);
-			store.addItem(new Potion(Entity.map.getPlayer(), 2), 34);
-			store.addItem(new Bow(this), 2);
-			store.addItem(new Potion(Entity.map.getPlayer(), 3), 11);
-			store.addItem(new SentryGun(null, new Vector2D()), 64);
-			store.addItem(new Projectile(new Vector2D(0, 0), new Vector2D(0, 0), 0, Projectile.ARROW), 64);
+			store.addItem(new Potion(Entity.map.getPlayer(), 0), 5, 30, "Potion of Health");
+			store.addItem(new Sword(this), 3, 100, "Steel Sword");
+			store.addItem(new Axe(this), 2, 100, "Axe");
+			store.addItem(new Hammer(this), 2, 100, "Hammer");
+			store.addItem(new Potion(Entity.map.getPlayer(), 1), 34, 30, "Potion of Agileness");
+			store.addItem(new Barricade(Entity.map.getPlayer(), new Vector2D()), 64, 150, "Barricade (x16)");
+			store.addItem(new Potion(Entity.map.getPlayer(), 2), 34, 30, "Potion of Strength");
+			store.addItem(new Bow(this), 2, 100, "Bow");
+			store.addItem(new Potion(Entity.map.getPlayer(), 3), 11, 130, "Potion of Wealth");
+			store.addItem(new SentryGun(null, new Vector2D()), 64, 200, "Sentry Gun (x4)");
+			store.addItem(new Projectile(new Vector2D(0, 0), new Vector2D(0, 0), 0, Projectile.ARROW), 64, 150, "Arrow (x16)");
 		}
 	}
 	

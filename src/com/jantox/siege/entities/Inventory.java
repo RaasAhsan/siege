@@ -31,8 +31,8 @@ public class Inventory extends Entity {
 	private int rest;
 	
 	public Inventory() {
-		super(new Vector2D(200, 10));
-		
+		super(new Vector2D(3, 334));
+	
 		slots = new ArrayList<ArrayList<Item>>();
 		
 		for(int i = 0; i < 9; i++) {
@@ -58,7 +58,10 @@ public class Inventory extends Entity {
 		item_sprites[ItemType.HAMMER.ordinal()] = Assets.loadSprite("hammer.png");
 		item_sprites[ItemType.BARRICADE.ordinal()] = Assets.loadSprite("item_barricade.png");
 		item_sprites[ItemType.SWORD.ordinal()] = Assets.loadSprite("item_sword.png");
-		item_sprites[ItemType.SENTRY_GUN.ordinal()] = Assets.loadSprite("log.png");
+		
+		item_sprites[ItemType.SENTRY_GUN.ordinal()] = Assets.loadSprite("sentry_gun.png");
+		item_sprites[ItemType.SENTRY_GUN.ordinal()].setAnimation(0,0,0);
+		item_sprites[ItemType.SENTRY_GUN.ordinal()].update();
 		
 		item_sprites[ItemType.POTION_HEALTH.ordinal()] = Assets.loadSprite("potions.png");
 		item_sprites[ItemType.POTION_HEALTH.ordinal()].setAnimation(0,0,0);
@@ -125,17 +128,17 @@ public class Inventory extends Entity {
 	}
 	
 	public void render(Renderer renderer) {
-		renderer.drawSprite(sprite, pos, false);
-		renderer.drawSprite(selsprite, new Vector2D(pos.x + selected * 35, pos.y), false);
+		//renderer.drawSprite(sprite, pos, false);
+		//renderer.drawSprite(selsprite, new Vector2D(pos.x + selected * 35, pos.y), false);
 		
 		renderer.setColor(Color.WHITE);
-		renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
+		renderer.setFont(new Font("Lucida Console", Font.BOLD, 9));
 		
-		for(int i = 0; i < 9; i++) {
+		for(int i = 0; i < 4; i++) {
 			Item item = this.getItemAtSlot(i);
 			if(item != null) {
-				renderer.drawSprite(item_sprites[this.getItemTypeOf(item).ordinal()], new Vector2D(pos.x + (35 * i) + 3, pos.y + 3), false);
-				renderer.drawText(this.getAmountOfItemsInSlot(i) + "", new Vector2D(pos.x + (35 * i) + 3 , pos.y + 11));
+				renderer.drawSprite(item_sprites[this.getItemTypeOf(item).ordinal()], new Vector2D(pos.x + (32 * i) + 3, pos.y + 3), false);
+				renderer.drawText(this.getAmountOfItemsInSlot(i) + "", new Vector2D(pos.x + (32 * i) + 3 , pos.y + 11));
 			} else {
 				continue;
 			}
@@ -255,6 +258,8 @@ public class Inventory extends Entity {
 			return new Potion(Entity.map.getPlayer(), Potion.POTION_SWIFT);
 		} else if(it == ItemType.BOW) {
 			return new Bow(Entity.map.getPlayer());
+		} else if(it == ItemType.SENTRY_GUN) {
+			return new SentryGun(null, new Vector2D(0,0));
 		}
 		return null;
 	}

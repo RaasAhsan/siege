@@ -100,9 +100,9 @@ public class ControlMap {
 					icons.setAnimation(1,1,0);
 				} else if(e instanceof SentryGun) {
 					icons.setAnimation(2,2,0);
-				} /*else if(e instanceof Spawner) {
-					renderer.setColor(new Color(255, 255, 255));
-				}*/ else if(e instanceof Barricade) {
+				} else if(e instanceof Spawner) {
+					icons.setAnimation(4, 4, 0);
+				} else if(e instanceof Barricade) {
 					icons.setAnimation(0, 0, 0);
 				} else {
 					continue;

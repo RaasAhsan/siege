@@ -15,7 +15,7 @@ import com.jantox.siege.scripts.Assets;
 
 public class Spawner extends Living {
 	
-	public static final int SPAWN_BREAK = 180;
+	public static final int SPAWN_BREAK = 500;
 	
 	private float radius;
 	
@@ -45,6 +45,7 @@ public class Spawner extends Living {
 		
 		if(health <= 0) {
 			MasterSpawner.CURRENT_SPAWNERS--;
+			MasterSpawner.SPAWNERS_DESTROYED ++;
 			this.expired = true;
 		}
 		

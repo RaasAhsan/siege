@@ -9,13 +9,18 @@ public class MasterSpawner {
 	public static int MONSTERS_KILLED = 0;
 	public static int SPAWNERS_DESTROYED = 0;
 	
-	public static final int MAX_SPAWNERS = 10;
-	public static final int MAX_MONSTERS = 50;
+	public static final int MAX_SPAWNERS = 6;
+	public static final int MAX_MONSTERS = 30;
+	
+	public static final int MAX_TIME_BETWEEN_SPAWNERS = 40;
+	public static final int MIN_TIME_BETWEEN_SPAWNERS = 20;
 
 	private Map map;
 	
 	private long seconds;
 	private long ms;
+	
+	private double spawntime = 40;
 	
 	public MasterSpawner(Map map) {
 		this.map = map;
@@ -28,17 +33,23 @@ public class MasterSpawner {
 		if(now - ms >= 1000) {
 			seconds++;
 			ms = System.currentTimeMillis();
-			
-			if(seconds % 15 == 0 && MasterSpawner.CURRENT_SPAWNERS < MAX_SPAWNERS) {
-				map.spawn(new Spawner(map.cps[2].getCloseTo(300)));
-				System.out.println("Spawners Active: " + CURRENT_SPAWNERS);
-			}
 		}
 		
-		if(seconds >= 60) {
+		if(seconds >= spawntime && MasterSpawner.CURRENT_SPAWNERS < MAX_SPAWNERS) {
 			seconds = 0;
+			map.spawn(new Spawner(map.cps[2].getCloseTo(225)));
+			System.out.println("Spawners Active: " + CURRENT_SPAWNERS);
+		}
+		
+		if(seconds % 10 == 0) {
 			
 			// this is the spawner algorithm
+			this.spawntime = -0.5 * MasterSpawner.SPAWNERS_DESTROYED + MasterSpawner.MAX_TIME_BETWEEN_SPAWNERS;
+			if(spawntime > MasterSpawner.MAX_TIME_BETWEEN_SPAWNERS) 
+				spawntime = MasterSpawner.MAX_TIME_BETWEEN_SPAWNERS;
+			else if(spawntime < MasterSpawner.MIN_TIME_BETWEEN_SPAWNERS) 
+				spawntime = MasterSpawner.MIN_TIME_BETWEEN_SPAWNERS;
+			System.out.println("Time between Spawners: " + spawntime);
 		}
 	}
 	

@@ -19,6 +19,7 @@ import com.jantox.siege.scripts.ScriptReader;
 public class DungeonGame extends Canvas implements Runnable {
 	
 	public static int coins = 100;
+	public static int tcoins = 100;
 	
 	private Thread thread;
 	private Keyboard ui;
@@ -54,7 +55,6 @@ public class DungeonGame extends Canvas implements Runnable {
 		this.addKeyListener((ui = new Keyboard(this)));
 		this.addMouseListener(ui);
 		this.addMouseMotionListener(ui);
-		Assets.init();
 		
 		youlost = Assets.loadSprite("youlost.png");
 		
@@ -143,7 +143,7 @@ public class DungeonGame extends Canvas implements Runnable {
 			// Update the frames we got.
 			int thisSecond = (int) (lastUpdateTime / 1000000000);
 			if (thisSecond > lastSecondTime) {
-				System.out.println("NEW SECOND " + thisSecond + " " + frameCount);
+				//System.out.println("NEW SECOND " + thisSecond + " " + frameCount);
 	            fps = frameCount;
 				frameCount = 0;
 				lastSecondTime = thisSecond;
@@ -168,6 +168,28 @@ public class DungeonGame extends Canvas implements Runnable {
 		if(Entity.ticks % 60 == 0) {
 			Entity.ticks = 0;
 		}
+		
+		
+		if(Entity.ticks % 3 == 0) {
+			if(Math.ceil(DungeonGame.tcoins) < Math.ceil(DungeonGame.coins)) {
+				tcoins = (int) (coins + (tcoins - coins) / 1.5);
+			} else if(Math.ceil(DungeonGame.tcoins) > Math.ceil(DungeonGame.coins)) {
+				tcoins = (int) (coins + (tcoins - coins) / 1.5);
+			} else if(Math.ceil(tcoins) == Math.ceil(coins)) {
+				tcoins = coins;
+			}
+		}
+		
+		/*
+		 * if scrolling > current
+		{
+		   scrolling = current + (scrolling - current)/2)
+		}
+		if scrolling < current
+		{
+		   scrolling = current - (scrolling - current)/2)
+		}
+		 */
 		
 		map.update();
 		gamemode.update();

@@ -21,7 +21,6 @@ public abstract class Living extends Entity implements Dropper {
 		if(this.isDead() && !expired)  {
 			expired = true;
 			if(this instanceof Zombie || this instanceof Skeleton) {
-				System.out.println("Killed a monster!");
 				MasterSpawner.CURRENT_MONSTERS--;
 				MasterSpawner.MONSTERS_KILLED ++;
 			}

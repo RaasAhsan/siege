@@ -46,6 +46,8 @@ public class Map {
 	public ControlMap controlmap;
 	private MasterSpawner spawner;
 	
+	private Sprite game_interface;
+	
 	private Player player;
 	
 	ControlPoint[] cps = new ControlPoint[5];
@@ -72,6 +74,7 @@ public class Map {
 		this.spawn(new AGC(new Vector2D(750, 750)));
 		
 		grass = Assets.loadSprite("grass.png");
+		game_interface = Assets.loadSprite("interface_game.png");
 		
 		currentstore = null;
 		
@@ -191,6 +194,9 @@ public class Map {
 		
 		pengine.render(renderer);
 		
+		renderer.drawSprite(game_interface, new Vector2D(), false);
+		minimap.render(renderer);
+		
 		if(currentstore == null) {
 			if(Keyboard.control) {
 				controlmap.render(renderer);
@@ -217,33 +223,30 @@ public class Map {
 					hx += 16;
 				}
 				
-				
-				
-				minimap.render(renderer);
-				
 				player.getInventory().render(renderer);
 				
 				renderer.setColor(new Color(0, 0,0,120));
-				renderer.fillRect(2, 465, 696, 30);
+				//renderer.fillRect(4, 466, 692, 30);
 				
 				renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
 				
-				int cx = 7;
+				
+				int cx = 87;
 				for(int j = 0; j < 5; j++) {
 					ControlPoint cp = cps[j];
 					
 					renderer.setColor(Color.WHITE);
-					renderer.drawText("Control Point " + (j + 1), new Vector2D(cx + 8, 477));
+					renderer.drawText("Control Point " + (j + 1), new Vector2D(cx + 6, 478));
 					
-					renderer.setColor(new Color(205, 50, 50));
-					renderer.fillRect(cx, 480, 120, 10);
-					renderer.setColor(new Color(50, 150, 50));
-					renderer.fillRect(cx, 480, cp.getOwnership() / (10000 / 120), 10);
+					renderer.setColor(new Color(205, 50, 30));
+					renderer.fillRect(cx, 481, 110, 10);
+					renderer.setColor(new Color(50, 150, 30));
+					renderer.fillRect(cx, 481, cp.getOwnership() / (10000 / 110), 10);
 					
 					renderer.setColor(Color.BLACK);
-					renderer.drawRect(new Rectangle(cx, 480, 120, 10));
+					renderer.drawRect(new Rectangle(cx, 481, 110, 10));
 					
-					cx += 140;
+					cx += 122;
 				}
 				
 				/*renderer.setColor(Color.BLACK);
@@ -255,11 +258,11 @@ public class Map {
 			currentstore.render(renderer);
 		}
 		
-		renderer.setColor(Color.GREEN);
-		renderer.drawText("Gems: " + DungeonGame.coins, new Vector2D(5, 55));
+		renderer.setColor(Color.YELLOW);
+		renderer.drawText("" + DungeonGame.tcoins, new Vector2D(36, 487));
 		
-		renderer.setColor(Color.BLACK);
-		renderer.drawText("FPS: " + DungeonGame.fps, new Vector2D(5, 75));
+		//renderer.setColor(Color.BLACK);
+		//renderer.drawText("FPS: " + DungeonGame.fps, new Vector2D(5, 75));
 	}
 	
 	public void seed(int seed) {

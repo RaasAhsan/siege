@@ -15,6 +15,7 @@ import com.jantox.siege.entities.Projectile;
 import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Tree;
 import com.jantox.siege.entities.monsters.Skeleton;
+import com.jantox.siege.entities.monsters.Spawner;
 import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.gfx.Renderer;
@@ -42,8 +43,6 @@ public class Minimap {
 	public void render(Renderer renderer) {
 		renderer.setColor(new Color(67, 140, 34, 160));
 		renderer.fillCircle(pos, new Vector2D(150, 150));
-		renderer.setColor(Color.BLACK);
-		renderer.drawCircle(pos, new Vector2D(150, 150));
 		
 		Vector2D ppos = new Vector2D(pos.getX() + 75, pos.getY() + 75);
 		
@@ -51,7 +50,7 @@ public class Minimap {
 		renderer.fillRect(ppos.getX(), ppos.getY(), 2, 2);
 		
 		Player p = map.getPlayer();
-		List<Entity> entities = map.getEntities(p, 500);
+		List<Entity> entities = map.getEntities();
 		
 		for(Entity e : entities) {
 			renderer.setColor(Color.BLACK);
@@ -66,7 +65,10 @@ public class Minimap {
 					renderer.setColor(new Color(0, 100, 0));
 				} else if(e instanceof SentryGun || e instanceof AGC) {
 					renderer.setColor(new Color(0, 0, 200));
+				} else if(e instanceof Spawner) {
+					renderer.setColor(new Color(0, 255, 255));
 				} else if(e instanceof Projectile || e instanceof Gem) {
+				
 					continue;
 				}
 				
@@ -78,7 +80,7 @@ public class Minimap {
 				
 				to.add(ppos);
 				
-				if(to.distanceSquared(ppos) < 75 * 75) {
+				if(to.distanceSquared(ppos) < 65 * 65) {
 					if(e instanceof Decoration) {
 						if(((Decoration)e).getType() == Decoration.FOOTPATH) {
 							renderer.setColor(Color.gray);
@@ -87,6 +89,21 @@ public class Minimap {
 							renderer.fillRect(to.getX(), to.getY(), 2, 2);
 					} else {
 						renderer.fillRect(to.getX(), to.getY(), 2, 2);
+					}
+				} else {
+					if(e instanceof Spawner) {
+						to = e.pos.copy();
+						to.subtract(p.getPosition());
+						
+						to.normalize();
+						to.multiply(75);
+						
+						to.add(ppos);
+						
+						System.out.println(to.getX() + " " + to.getY());
+						
+						renderer.setColor(new Color(0, 255, 255));
+						renderer.fillRect(to.getX() - 3, to.getY() - 3, 6, 6);
 					}
 				}
 			} else {
