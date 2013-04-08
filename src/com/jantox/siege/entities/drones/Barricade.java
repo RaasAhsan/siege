@@ -1,10 +1,13 @@
-package com.jantox.siege.entities;
+package com.jantox.siege.entities.drones;
 
 import java.awt.image.RescaleOp;
 
 import com.jantox.siege.Item;
 import com.jantox.siege.Keyboard;
 import com.jantox.siege.colsys.Circle;
+import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.Living;
+import com.jantox.siege.entities.Player;
 import com.jantox.siege.entities.Inventory.ItemType;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;

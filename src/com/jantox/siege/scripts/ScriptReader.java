@@ -8,13 +8,13 @@ import java.util.ArrayList;
 
 import com.jantox.siege.Map;
 import com.jantox.siege.colsys.Line;
-import com.jantox.siege.entities.Barricade;
 import com.jantox.siege.entities.ControlPoint;
 import com.jantox.siege.entities.Decoration;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Fence;
 import com.jantox.siege.entities.Gate;
-import com.jantox.siege.entities.monsters.Spawner;
+import com.jantox.siege.entities.drones.Barricade;
+import com.jantox.siege.entities.monsters.MonsterFactory;
 import com.jantox.siege.gfx.Sprite.Animation;
 import com.jantox.siege.math.Vector2D;
 
@@ -106,7 +106,7 @@ public class ScriptReader {
 				} else if(c == 'g') {
 					map.spawn(new Gate(new Vector2D(tx * 32, ty * 32)));
 				} else if(c == 's') {
-					map.spawn(new Spawner(new Vector2D(tx * 32, ty * 32)));
+					map.spawn(new MonsterFactory(new Vector2D(tx * 32, ty * 32)));
 				} else if(c == 'd') {
 					map.spawnForge(new Vector2D(tx * 32, ty * 32));
 				} else if(c == 'a') {

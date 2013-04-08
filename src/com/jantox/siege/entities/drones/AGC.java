@@ -1,12 +1,16 @@
-package com.jantox.siege.entities;
+package com.jantox.siege.entities.drones;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import com.jantox.siege.Map;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.colsys.CollisionSystem;
+import com.jantox.siege.entities.ControlPoint;
+import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.Living;
 import com.jantox.siege.entities.Entity.entity_type;
 import com.jantox.siege.entities.monsters.Skeleton;
 import com.jantox.siege.entities.monsters.Zombie;
@@ -34,6 +38,8 @@ public class AGC extends Living {
 		this.sprite = Assets.loadSprite("agc.png");
 		
 		direction = 0;
+		
+		Map.AGC_COUNT++;
 		
 		sprite.setAnimation(0,7,5);
 		ControlPoint cp = map.getRandomControlPoint();

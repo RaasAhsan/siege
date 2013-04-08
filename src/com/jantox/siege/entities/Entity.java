@@ -7,8 +7,11 @@ import com.jantox.siege.Active;
 import com.jantox.siege.Map;
 import com.jantox.siege.colsys.CollisionMask;
 import com.jantox.siege.colsys.CollisionOwner;
+import com.jantox.siege.entities.drones.AGC;
+import com.jantox.siege.entities.drones.Barricade;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.entities.monsters.Skeleton;
-import com.jantox.siege.entities.monsters.Spawner;
+import com.jantox.siege.entities.monsters.MonsterFactory;
 import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
@@ -66,7 +69,7 @@ public abstract class Entity implements Active, CollisionOwner {
 			type = entity_type.SKELETON;
 		} else if(this instanceof AGC) {
 			type = entity_type.AGC;
-		} else if(this instanceof Spawner) {
+		} else if(this instanceof MonsterFactory) {
 			type = entity_type.SPAWNER;
 		}
 	}

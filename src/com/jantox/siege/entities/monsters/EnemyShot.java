@@ -3,14 +3,14 @@ package com.jantox.siege.entities.monsters;
 import java.awt.Color;
 
 import com.jantox.siege.colsys.Circle;
-import com.jantox.siege.entities.AGC;
 import com.jantox.siege.entities.ControlPoint;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Living;
 import com.jantox.siege.entities.Player;
 import com.jantox.siege.entities.Projectile;
-import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Entity.entity_type;
+import com.jantox.siege.entities.drones.AGC;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.particles.ColorParticle;

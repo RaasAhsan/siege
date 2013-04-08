@@ -3,12 +3,10 @@ package com.jantox.siege.entities.monsters;
 import java.util.ArrayList;
 
 import com.jantox.siege.Dropper;
-import com.jantox.siege.MasterSpawner;
+import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.Keyboard;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.colsys.CollisionSystem;
-import com.jantox.siege.entities.AGC;
-import com.jantox.siege.entities.Barricade;
 import com.jantox.siege.entities.ControlPoint;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Gate;
@@ -16,8 +14,10 @@ import com.jantox.siege.entities.Gem;
 import com.jantox.siege.entities.Living;
 import com.jantox.siege.entities.Player;
 import com.jantox.siege.entities.Projectile;
-import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Entity.entity_type;
+import com.jantox.siege.entities.drones.AGC;
+import com.jantox.siege.entities.drones.Barricade;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;
@@ -85,8 +85,10 @@ public class Zombie extends Living {
 		timedone++;
 		
 		if(timedone > 60 * 45) {
-			this.expired = true;
-			MasterSpawner.CURRENT_MONSTERS--;
+			if(!gotodone) {
+				this.expired = true;
+				SpawnerFactory.CURRENT_MONSTERS--;
+			}
 		}
 		
 		if(breakTime > 0)

@@ -1,19 +1,14 @@
 package com.jantox.siege.entities.monsters;
 
-import java.util.Random;
-
-import com.jantox.siege.Map;
-import com.jantox.siege.MasterSpawner;
+import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.colsys.AABB;
-import com.jantox.siege.colsys.Line;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Living;
-import com.jantox.siege.entities.Entity.entity_type;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;
 
-public class Spawner extends Living {
+public class MonsterFactory extends Living {
 	
 	public static final int SPAWN_BREAK = 500;
 	
@@ -23,12 +18,12 @@ public class Spawner extends Living {
 	private long timeSinceLast;
 	private boolean spawning;
 	
-	public Spawner(Vector2D pos) {
+	public MonsterFactory(Vector2D pos) {
 		super(pos);
 		
 		this.colmask = new AABB(pos.copy(), 56, 10);
 		
-		this.maxhealth = this.health = 1200;
+		this.maxhealth = this.health = 1200 + 20 * SpawnerFactory.SPAWNERS_DESTROYED;
 		
 		this.totalSpawned = 0;
 		this.radius = 30;
@@ -37,15 +32,15 @@ public class Spawner extends Living {
 		
 		this.sprite = Assets.loadSprite("spawner.png");
 		
-		MasterSpawner.CURRENT_SPAWNERS++;
+		SpawnerFactory.CURRENT_SPAWNERS++;
 	}
 	
 	public void update() {
 		super.update();
 		
 		if(health <= 0) {
-			MasterSpawner.CURRENT_SPAWNERS--;
-			MasterSpawner.SPAWNERS_DESTROYED ++;
+			SpawnerFactory.CURRENT_SPAWNERS--;
+			SpawnerFactory.SPAWNERS_DESTROYED ++;
 			this.expired = true;
 		}
 		
@@ -54,7 +49,7 @@ public class Spawner extends Living {
 		if(timeSinceLast > SPAWN_BREAK) {
 			if(rand.nextInt() % 37 == 0) {
 				if(spawning) {
-					if(MasterSpawner.CURRENT_MONSTERS < MasterSpawner.MAX_MONSTERS) {
+					if(SpawnerFactory.CURRENT_MONSTERS < SpawnerFactory.MAX_MONSTERS) {
 						Vector2D rand = this.getCloseTo(180);
 						
 						Vector2D sps = new Vector2D(Entity.rand.nextGaussian(), Entity.rand.nextGaussian());
@@ -62,8 +57,8 @@ public class Spawner extends Living {
 						sps.multiply(40 + Entity.rand.nextGaussian() * 128);
 						sps.add(pos.copy());
 						this.spawn(entity_type.PLAYER, sps, rand);
-						MasterSpawner.CURRENT_MONSTERS++;
-						System.out.println("Monsters Alive: " + MasterSpawner.CURRENT_MONSTERS);
+						SpawnerFactory.CURRENT_MONSTERS++;
+						System.out.println("Monsters Alive: " + SpawnerFactory.CURRENT_MONSTERS);
 					}
 				}
 			}

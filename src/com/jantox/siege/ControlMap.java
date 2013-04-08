@@ -7,8 +7,6 @@ import java.util.List;
 
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.colsys.CollisionSystem;
-import com.jantox.siege.entities.AGC;
-import com.jantox.siege.entities.Barricade;
 import com.jantox.siege.entities.ControlPoint;
 import com.jantox.siege.entities.Decoration;
 import com.jantox.siege.entities.Entity;
@@ -17,10 +15,12 @@ import com.jantox.siege.entities.Gate;
 import com.jantox.siege.entities.Gem;
 import com.jantox.siege.entities.Player;
 import com.jantox.siege.entities.Projectile;
-import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Tree;
+import com.jantox.siege.entities.drones.AGC;
+import com.jantox.siege.entities.drones.Barricade;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.entities.monsters.Skeleton;
-import com.jantox.siege.entities.monsters.Spawner;
+import com.jantox.siege.entities.monsters.MonsterFactory;
 import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.gfx.Renderer;
@@ -100,7 +100,7 @@ public class ControlMap {
 					icons.setAnimation(1,1,0);
 				} else if(e instanceof SentryGun) {
 					icons.setAnimation(2,2,0);
-				} else if(e instanceof Spawner) {
+				} else if(e instanceof MonsterFactory) {
 					icons.setAnimation(4, 4, 0);
 				} else if(e instanceof Barricade) {
 					icons.setAnimation(0, 0, 0);

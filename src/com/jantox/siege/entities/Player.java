@@ -1,11 +1,14 @@
 package com.jantox.siege.entities;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import com.jantox.siege.Item;
 import com.jantox.siege.Keyboard;
+import com.jantox.siege.PotionEffect;
 import com.jantox.siege.colsys.AABB;
 import com.jantox.siege.colsys.Circle;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Camera;
@@ -22,16 +25,16 @@ public class Player extends Living {
 	
 	private Camera cam;
 	private int armor;
-	public int potion;
 	
 	public Sprite heart, bodyarmor;
+	public ArrayList<PotionEffect> peffects;
 	
 	private Inventory inventory;
 	
 	public Player(Vector2D pos, Keyboard ui, Vector2D sdim) {
 		super(pos);
 		
-		potion = 0;
+		peffects = new ArrayList<PotionEffect>();
 		
 		this.colmask = new Circle(this.pos, 10);
 		this.input = ui;
@@ -56,7 +59,7 @@ public class Player extends Living {
 			this.pickup(new Projectile(new Vector2D(0, 0), new Vector2D(0, 0), 0, Projectile.ARROW));
 		}
 		for(int i = 0; i < 8; i++)
-			this.pickup(new SentryGun(null, new Vector2D()));
+			this.pickup(new Claymore(this, new Vector2D(), 0));
 		/*this.pickup(new Axe(this));
 		this.pickup(new Hammer(this));
 		for(int i = 0; i < 128; i++) {
@@ -94,7 +97,7 @@ public class Player extends Living {
 			direction = LEFT;
 		}
 		
-		if(potion > 0) {
+		/*if(potiontime > 0) {
 			if(Entity.ticks % 15 == 0) {
 				Vector2D vel = new Vector2D(rand.nextGaussian()/6, -0.5);
 				Vector2D np = pos.copy();
@@ -103,9 +106,9 @@ public class Player extends Living {
 				np.y += rand.nextGaussian() * 5;
 				map.spawn(new TextureParticle(rand.nextInt(5) + 90, np.copy(), vel, 0, Assets.loadSprite("bubble.png")));
 				
-				potion --;
+				potiontime --;
 			}
-		}
+		}*/
 		
 		double angle = this.pos.angleTo(new Vector2D(Keyboard.x + this.cam.pos.x, Keyboard.y + this.cam.pos.y));
 		angle = Math.toDegrees(angle);

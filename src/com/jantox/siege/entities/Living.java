@@ -1,7 +1,10 @@
 package com.jantox.siege.entities;
 
 import com.jantox.siege.Dropper;
-import com.jantox.siege.MasterSpawner;
+import com.jantox.siege.Map;
+import com.jantox.siege.SpawnerFactory;
+import com.jantox.siege.entities.drones.AGC;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.entities.monsters.Skeleton;
 import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.math.Vector2D;
@@ -21,8 +24,12 @@ public abstract class Living extends Entity implements Dropper {
 		if(this.isDead() && !expired)  {
 			expired = true;
 			if(this instanceof Zombie || this instanceof Skeleton) {
-				MasterSpawner.CURRENT_MONSTERS--;
-				MasterSpawner.MONSTERS_KILLED ++;
+				SpawnerFactory.CURRENT_MONSTERS--;
+				SpawnerFactory.MONSTERS_KILLED ++;
+			} else if(this instanceof AGC) {
+				Map.AGC_COUNT --;
+			} else if(this instanceof SentryGun) {
+				Map.SENTRY_COUNT --;
 			}
 			this.drop(rand.nextInt(5000));
 			for(int i = 0; i < 50; i++) {

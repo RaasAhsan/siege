@@ -20,7 +20,6 @@ public class Sounds implements Runnable {
 
 	public Sounds() {
 		sounds = new ArrayList<Sound>();
-		System.out.println("hi");
 		try {
 			AudioFormat aformat = new AudioFormat(SAMPLE_RATE, 8, 1, true, true);
 			dataline = AudioSystem.getSourceDataLine(aformat);

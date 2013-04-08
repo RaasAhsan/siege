@@ -12,8 +12,6 @@ import java.util.Random;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.colsys.CollisionSystem;
 import com.jantox.siege.colsys.Line;
-import com.jantox.siege.entities.AGC;
-import com.jantox.siege.entities.Barricade;
 import com.jantox.siege.entities.ControlPoint;
 import com.jantox.siege.entities.Decoration;
 import com.jantox.siege.entities.Entity;
@@ -21,10 +19,12 @@ import com.jantox.siege.entities.Living;
 import com.jantox.siege.entities.NPC;
 import com.jantox.siege.entities.Player;
 import com.jantox.siege.entities.Projectile;
-import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Tree;
 import com.jantox.siege.entities.Entity.entity_type;
-import com.jantox.siege.entities.monsters.Spawner;
+import com.jantox.siege.entities.drones.AGC;
+import com.jantox.siege.entities.drones.Barricade;
+import com.jantox.siege.entities.drones.SentryGun;
+import com.jantox.siege.entities.monsters.MonsterFactory;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Camera;
@@ -43,8 +43,7 @@ public class Map {
 	
 	private ParticleEngine pengine;
 	private Minimap minimap;
-	public ControlMap controlmap;
-	private MasterSpawner spawner;
+	private SpawnerFactory spawner;
 	
 	private Sprite game_interface;
 	
@@ -58,12 +57,15 @@ public class Map {
 	
 	public Store currentstore;
 	
+	public static int AGC_COUNT = 0;
+	public static int SENTRY_COUNT = 0;
+	
 	public Map() {
 		entities = new ArrayList<Entity>();
 		
 		pengine = new ParticleEngine();
 		minimap = new Minimap(this);
-		spawner = new MasterSpawner(this);
+		spawner = new SpawnerFactory(this);
 	}
 	
 	public void init() {		
@@ -84,8 +86,6 @@ public class Map {
 				cps[cpc++] = (ControlPoint) e;
 			}
 		}
-		
-		controlmap = new ControlMap(this, player.input);
 	}
 	
 	public void update() {
@@ -139,10 +139,6 @@ public class Map {
 		}
 		
 		pengine.update();
-		
-		if(Keyboard.control) {
-			controlmap.update();
-		}
 		
 		// sort wthe entities by depth
 		Collections.sort(entities, new Comparator<Entity>() {
@@ -198,62 +194,64 @@ public class Map {
 		minimap.render(renderer);
 		
 		if(currentstore == null) {
-			if(Keyboard.control) {
-				controlmap.render(renderer);
-			} else {
-				int hx = 10;
-				player.heart.setAnimation(2, 2, 0);
-				player.heart.update();
-				int i = 0;
-				for(; i < player.getHealth() / 10; i++) {
-					renderer.drawSprite(player.heart, new Vector2D(hx - 5, 5), false);
-					hx += 16;
-				}
-				if(i != 10) {
-					player.heart.setAnimation(0,0,0);
-					player.heart.update();
-					for(; i < 10; i++) {
-						renderer.drawSprite(player.heart, new Vector2D(hx - 5, 5), false);
-						hx += 16;
-					}
-				}
-				hx = 10;
-				for(int j = 0; j < 10; j++) {
-					renderer.drawSprite(player.bodyarmor, new Vector2D(hx - 5, 25), false);
-					hx += 16;
-				}
-				
-				player.getInventory().render(renderer);
-				
-				renderer.setColor(new Color(0, 0,0,120));
-				//renderer.fillRect(4, 466, 692, 30);
-				
-				renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
-				
-				
-				int cx = 87;
-				for(int j = 0; j < 5; j++) {
-					ControlPoint cp = cps[j];
-					
-					renderer.setColor(Color.WHITE);
-					renderer.drawText("Control Point " + (j + 1), new Vector2D(cx + 6, 478));
-					
-					renderer.setColor(new Color(205, 50, 30));
-					renderer.fillRect(cx, 481, 110, 10);
-					renderer.setColor(new Color(50, 150, 30));
-					renderer.fillRect(cx, 481, cp.getOwnership() / (10000 / 110), 10);
-					
-					renderer.setColor(Color.BLACK);
-					renderer.drawRect(new Rectangle(cx, 481, 110, 10));
-					
-					cx += 122;
-				}
-				
-				/*renderer.setColor(Color.BLACK);
-				renderer.drawText("AGC Drones: " + agc, new Vector2D(534, 405));
-				renderer.drawText("Sentry Guns: " + sg, new Vector2D(534, 425));
-				renderer.drawText("Barricades: " + bc, new Vector2D(534, 445));*/
+			int hx = 10;
+			player.heart.setAnimation(2, 2, 0);
+			player.heart.update();
+			int i = 0;
+			for (; i < player.getHealth() / 10; i++) {
+				renderer.drawSprite(player.heart, new Vector2D(hx - 5, 5),
+						false);
+				hx += 16;
 			}
+			if (i != 10) {
+				player.heart.setAnimation(0, 0, 0);
+				player.heart.update();
+				for (; i < 10; i++) {
+					renderer.drawSprite(player.heart, new Vector2D(hx - 5, 5),
+							false);
+					hx += 16;
+				}
+			}
+			hx = 10;
+			for (int j = 0; j < 10; j++) {
+				renderer.drawSprite(player.bodyarmor, new Vector2D(hx - 5, 25),
+						false);
+				hx += 16;
+			}
+
+			player.getInventory().render(renderer);
+
+			renderer.setColor(new Color(0, 0, 0, 120));
+			// renderer.fillRect(4, 466, 692, 30);
+
+			renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
+
+			int cx = 87;
+			for (int j = 0; j < 5; j++) {
+				ControlPoint cp = cps[j];
+
+				renderer.setColor(Color.WHITE);
+				renderer.drawText("Control Point " + (j + 1), new Vector2D(
+						cx + 6, 478));
+
+				renderer.setColor(new Color(205, 50, 30));
+				renderer.fillRect(cx, 481, 110, 10);
+				renderer.setColor(new Color(50, 150, 30));
+				renderer.fillRect(cx, 481, cp.getOwnership() / (10000 / 110),
+						10);
+
+				renderer.setColor(Color.BLACK);
+				renderer.drawRect(new Rectangle(cx, 481, 110, 10));
+
+				cx += 122;
+			}
+
+			/*
+			 * renderer.setColor(Color.BLACK); renderer.drawText("AGC Drones: "
+			 * + agc, new Vector2D(534, 405)); renderer.drawText("Sentry Guns: "
+			 * + sg, new Vector2D(534, 425)); renderer.drawText("Barricades: " +
+			 * bc, new Vector2D(534, 445));
+			 */
 		} else {
 			currentstore.render(renderer);
 		}

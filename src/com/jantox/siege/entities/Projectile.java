@@ -4,8 +4,9 @@ import java.awt.Color;
 
 import com.jantox.siege.Item;
 import com.jantox.siege.colsys.Circle;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.entities.monsters.Skeleton;
-import com.jantox.siege.entities.monsters.Spawner;
+import com.jantox.siege.entities.monsters.MonsterFactory;
 import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
@@ -76,7 +77,7 @@ public class Projectile extends Entity implements Item {
 	@Override
 	public void handleCollision(Entity e) {
 		if(e instanceof Living) {
-			if(e instanceof Skeleton || e instanceof Zombie || e instanceof Spawner) {
+			if(e instanceof Skeleton || e instanceof Zombie || e instanceof MonsterFactory) {
 				((Living)e).damage(damage);
 			}
 		}

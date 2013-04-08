@@ -2,6 +2,8 @@ package com.jantox.siege.entities;
 
 import com.jantox.siege.Store;
 import com.jantox.siege.colsys.Circle;
+import com.jantox.siege.entities.drones.Barricade;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;

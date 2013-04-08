@@ -1,6 +1,6 @@
 package com.jantox.siege.entities.monsters;
 
-import com.jantox.siege.MasterSpawner;
+import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Living;
 import com.jantox.siege.entities.Weapon;
@@ -23,14 +23,14 @@ public class Monster extends Living {
 		this.speed = speed;
 		this.damage = damage;
 		
-		MasterSpawner.CURRENT_MONSTERS++;
+		SpawnerFactory.CURRENT_MONSTERS++;
 	}
 	
 	public void update() {
 		super.update();
 		
 		if(health < 0) {
-			MasterSpawner.CURRENT_MONSTERS--;
+			SpawnerFactory.CURRENT_MONSTERS--;
 		}
 	}
 

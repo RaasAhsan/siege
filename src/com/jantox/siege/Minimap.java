@@ -1,9 +1,9 @@
 package com.jantox.siege;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 import java.util.List;
 
-import com.jantox.siege.entities.AGC;
 import com.jantox.siege.entities.ControlPoint;
 import com.jantox.siege.entities.Decoration;
 import com.jantox.siege.entities.Entity;
@@ -12,14 +12,18 @@ import com.jantox.siege.entities.Gate;
 import com.jantox.siege.entities.Gem;
 import com.jantox.siege.entities.Player;
 import com.jantox.siege.entities.Projectile;
-import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Tree;
+import com.jantox.siege.entities.drones.AGC;
+import com.jantox.siege.entities.drones.Barricade;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.entities.monsters.Skeleton;
-import com.jantox.siege.entities.monsters.Spawner;
+import com.jantox.siege.entities.monsters.MonsterFactory;
 import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.BitmapFont;
 import com.jantox.siege.gfx.Renderer;
+import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
+import com.jantox.siege.scripts.Assets;
 
 public class Minimap {
 
@@ -27,11 +31,13 @@ public class Minimap {
 	private Map map;
 	
 	private BitmapFont numbers;
+	private Sprite icons;
 	
 	public Minimap(Map map) {
 		this.map = map;
 		
 		this.pos = new Vector2D(535, 15);
+		icons = Assets.loadSprite("cmap_icons.png");
 		
 		numbers = new BitmapFont();
 	}
@@ -41,91 +47,76 @@ public class Minimap {
 	}
 	
 	public void render(Renderer renderer) {
-		renderer.setColor(new Color(67, 140, 34, 160));
+		renderer.setColor(new Color(76, 150, 44));
 		renderer.fillCircle(pos, new Vector2D(150, 150));
 		
 		Vector2D ppos = new Vector2D(pos.getX() + 75, pos.getY() + 75);
 		
-		renderer.setColor(Color.WHITE);
-		renderer.fillRect(ppos.getX(), ppos.getY(), 2, 2);
-		
 		Player p = map.getPlayer();
 		List<Entity> entities = map.getEntities();
 		
-		for(Entity e : entities) {
-			renderer.setColor(Color.BLACK);
-			if(!(e instanceof ControlPoint)) {
-				if(e instanceof Zombie || e instanceof Skeleton) {
-					renderer.setColor(Color.RED);
-				} else if(e instanceof Fence) {
-					renderer.setColor(new Color(139, 69, 69));
-				} else if(e instanceof Gate) {
-					renderer.setColor(new Color(139, 60, 60));
-				} else if(e instanceof Tree) {
-					renderer.setColor(new Color(0, 100, 0));
-				} else if(e instanceof SentryGun || e instanceof AGC) {
-					renderer.setColor(new Color(0, 0, 200));
-				} else if(e instanceof Spawner) {
-					renderer.setColor(new Color(0, 255, 255));
-				} else if(e instanceof Projectile || e instanceof Gem) {
-				
+		for (Entity e : entities) {
+			Vector2D to = e.pos.copy();
+			to.subtract(p.getPosition());
+
+			to.normalize();
+			to.multiply(Math.sqrt(e.distanceSquared(p)) / 5);
+
+			to.add(ppos);
+
+			if (e instanceof AGC) {
+				icons.setAnimation(1, 1, 0);
+			} else if (e instanceof SentryGun) {
+				icons.setAnimation(2, 2, 0);
+			} else if (e instanceof MonsterFactory) {
+				icons.setAnimation(4, 4, 0);
+			} else if (e instanceof Fence) {
+				icons.setAnimation(6, 6, 0);
+			} else if (e instanceof Barricade) {
+				icons.setAnimation(0, 0, 0);
+			} else if (e instanceof Tree) {
+				icons.setAnimation(5, 5, 0);
+			} else if (e instanceof ControlPoint) {
+				int a = ((ControlPoint)e).getOwner() + 8;
+				icons.setAnimation(a, a, 0);
+			} else if (e instanceof Decoration) {
+				if (((Decoration) e).getType() == Decoration.FOOTPATH)
+					icons.setAnimation(7, 7, 0);
+				else
 					continue;
+			} else if (e instanceof Skeleton || e instanceof Zombie) {
+				if (to.distanceSquared(ppos) < 65 * 65) {
+					renderer.setColor(Color.RED);
+					renderer.fill(new Rectangle(to.getX() - 1, to.getY() - 1,
+							3, 3), false);
 				}
-				
-				Vector2D to = e.pos.copy();
-				to.subtract(p.getPosition());
-				
-				to.normalize();
-				to.multiply(Math.sqrt(e.distanceSquared(p)) / 5);
-				
-				to.add(ppos);
-				
-				if(to.distanceSquared(ppos) < 65 * 65) {
-					if(e instanceof Decoration) {
-						if(((Decoration)e).getType() == Decoration.FOOTPATH) {
-							renderer.setColor(Color.gray);
-							renderer.fillRect(to.getX(), to.getY(), 7, 7);
-						} else
-							renderer.fillRect(to.getX(), to.getY(), 2, 2);
-					} else {
-						renderer.fillRect(to.getX(), to.getY(), 2, 2);
-					}
-				} else {
-					if(e instanceof Spawner) {
-						to = e.pos.copy();
-						to.subtract(p.getPosition());
-						
-						to.normalize();
-						to.multiply(75);
-						
-						to.add(ppos);
-						
-						System.out.println(to.getX() + " " + to.getY());
-						
-						renderer.setColor(new Color(0, 255, 255));
-						renderer.fillRect(to.getX() - 3, to.getY() - 3, 6, 6);
-					}
-				}
+				continue;
 			} else {
-				Vector2D to = e.pos.copy();
-				to.subtract(p.getPosition());
-				
-				to.normalize();
-				to.multiply(Math.sqrt(e.distanceSquared(p)) / 5);
-				
-				to.add(ppos);
-				if(to.distanceSquared(ppos) <= 65 * 65) {
-					String cps = String.valueOf(((ControlPoint)e).getControlPointID());
-					this.numbers.render(renderer, new Vector2D(to.x - 16, to.y - 16), cps);
+				continue;
+			}
+			icons.update();
+
+			if (to.distanceSquared(ppos) < 65 * 65) {
+				renderer.drawSprite(icons, new Vector2D(to.x - 16, to.y - 16),
+						false);
+			} else {
+				if (e instanceof MonsterFactory) {
+					to = e.pos.copy();
+					to.subtract(p.getPosition());
+
+					to.normalize();
+					to.multiply(75);
+
+					to.add(ppos);
+
+					renderer.drawSprite(icons, new Vector2D(to.x - 16,
+							to.y - 16), false);
 				}
 			}
 		}
 		
-		/*for(int i = 0; i < 10000; i++) {
-			renderer.setColor(Color.BLACK);
-			Vector2D v = new Vector2D(pos.x + rand.nextGaussian() * 25 + 75, pos.y + rand.nextGaussian() * 25 + 75);
-			renderer.drawLine(v, v, false);
-		}*/
+		renderer.setColor(Color.WHITE);
+		renderer.fillRect(ppos.getX() - 2, ppos.getY() - 2, 4, 4);
 	}
 	
 }

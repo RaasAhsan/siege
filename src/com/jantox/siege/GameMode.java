@@ -80,13 +80,12 @@ public abstract class GameMode {
 				}
 			}
 			if(monsters == 4) {
-				System.exit(0);
+				//System.exit(0);
 			}
 		}
 
 		@Override
 		public void render(Renderer renderer) {
-			// TODO Auto-generated method stub
 			
 		}
 

@@ -9,7 +9,6 @@ import com.jantox.siege.colsys.AABB;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.colsys.CollisionSystem;
 import com.jantox.siege.entities.Axe;
-import com.jantox.siege.entities.Barricade;
 import com.jantox.siege.entities.Blaster;
 import com.jantox.siege.entities.Bow;
 import com.jantox.siege.entities.Entity;
@@ -18,9 +17,10 @@ import com.jantox.siege.entities.Inventory;
 import com.jantox.siege.entities.Log;
 import com.jantox.siege.entities.Potion;
 import com.jantox.siege.entities.Projectile;
-import com.jantox.siege.entities.SentryGun;
 import com.jantox.siege.entities.Sword;
 import com.jantox.siege.entities.Inventory.ItemType;
+import com.jantox.siege.entities.drones.Barricade;
+import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
@@ -132,7 +132,7 @@ public class Store {
 			renderer.setFont(new Font("Lucida Console", Font.BOLD, 11));
 			renderer.drawSprite(item_sprites[this.getItemTypeOf(i.i).ordinal()], new Vector2D(itempos.x, itempos.y - 2), false);
 			renderer.setColor(new Color(0, 255, 255));
-			renderer.drawText(i.amount + "", new Vector2D(itempos.x - 3, itempos.y + 7));
+			renderer.drawText(i.amount + "", new Vector2D(itempos.x + 2, itempos.y + 7));
 			t++;
 		}
 		

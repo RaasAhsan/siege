@@ -121,7 +121,6 @@ public class Keyboard implements KeyListener, MouseMotionListener, MouseListener
 
 	@Override
 	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -137,8 +136,6 @@ public class Keyboard implements KeyListener, MouseMotionListener, MouseListener
 			right_mouse = true;
 			break;
 		}
-		
-		dg.map.controlmap.click();
 	}
 
 	@Override

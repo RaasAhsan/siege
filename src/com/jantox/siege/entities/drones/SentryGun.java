@@ -1,4 +1,4 @@
-package com.jantox.siege.entities;
+package com.jantox.siege.entities.drones;
 
 import java.awt.image.RescaleOp;
 import java.io.IOException;
@@ -7,7 +7,12 @@ import javax.imageio.ImageIO;
 
 import com.jantox.siege.Item;
 import com.jantox.siege.Keyboard;
+import com.jantox.siege.Map;
 import com.jantox.siege.colsys.Circle;
+import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.Living;
+import com.jantox.siege.entities.Player;
+import com.jantox.siege.entities.Projectile;
 import com.jantox.siege.entities.Inventory.ItemType;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
@@ -29,6 +34,8 @@ public class SentryGun extends Living implements Item {
 		
 		this.health = 50;
 		this.colmask = new Circle(pos, 15);
+		
+		Map.SENTRY_COUNT++;
 		
 		try {
 			this.sprite = new Sprite(32, 32, ImageIO.read(this.getClass().getResourceAsStream("/res/sentry_gun.png")));

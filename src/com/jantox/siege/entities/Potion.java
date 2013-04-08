@@ -36,7 +36,7 @@ public class Potion extends Entity implements Item {
 	@Override
 	public int onItemUse() {
 		//Sounds.play(new Sound.Drink());
-		p.potion = 3600;
+		//p.peffects.add(new PotionEffect(pid, ))
 		return 0;
 	}
 
