@@ -32,10 +32,8 @@ public class SentryGun extends Living implements Item {
 	public SentryGun(Player p, Vector2D pos) {
 		super(pos);
 		
-		this.health = 50;
+		this.health = this.maxhealth = 100;
 		this.colmask = new Circle(pos, 15);
-		
-		Map.SENTRY_COUNT++;
 		
 		try {
 			this.sprite = new Sprite(32, 32, ImageIO.read(this.getClass().getResourceAsStream("/res/sentry_gun.png")));
@@ -47,10 +45,12 @@ public class SentryGun extends Living implements Item {
 		
 		sprite.setAnimation(0,7,5);
 		
-		if(player != null)
+		if(p != null)
 			this.player = p;
-		else
+		else {
 			inventory = false;
+			Map.SENTRY_COUNT++;
+		}
 	}
 
 	@Override

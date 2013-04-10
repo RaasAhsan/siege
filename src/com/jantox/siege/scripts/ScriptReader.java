@@ -13,6 +13,7 @@ import com.jantox.siege.entities.Decoration;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Fence;
 import com.jantox.siege.entities.Gate;
+import com.jantox.siege.entities.Player;
 import com.jantox.siege.entities.drones.Barricade;
 import com.jantox.siege.entities.monsters.MonsterFactory;
 import com.jantox.siege.gfx.Sprite.Animation;
@@ -20,8 +21,8 @@ import com.jantox.siege.math.Vector2D;
 
 public class ScriptReader {
 
-	public Map readMapScript(String mapfn) throws NumberFormatException, IOException {
-		Map map = new Map();
+	public Map readMapScript(Player p, String mapfn) throws NumberFormatException, IOException {
+		Map map = new Map(p);
 		Entity.map = map;
 		
 		BufferedReader reader = new BufferedReader(new InputStreamReader(this.getClass().getResourceAsStream("/maps/" + mapfn), "UTF-8"));

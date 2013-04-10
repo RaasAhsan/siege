@@ -3,7 +3,6 @@ package com.jantox.siege.entities.monsters;
 import java.util.ArrayList;
 
 import com.jantox.siege.Dropper;
-import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.Keyboard;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.colsys.CollisionSystem;

@@ -1,6 +1,7 @@
 package com.jantox.siege.entities;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Random;
 
 import com.jantox.siege.Active;
@@ -28,7 +29,7 @@ public abstract class Entity implements Active, CollisionOwner {
 	
 	public static int ticks;
 	public static Map map;
-	public static Random rand = new Random(System.currentTimeMillis() * System.nanoTime());
+	public static Random rand = new Random(Calendar.getInstance().getTimeInMillis());
 	
 	public Vector2D pos;
 	protected int status;

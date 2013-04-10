@@ -33,12 +33,15 @@ public class Gem extends Entity {
 		if(this.distanceSquared(p) <= 50 * 50) {
 			if(distanceSquared(p) <= 10) {
 				this.expired = true;
+				int dbl = 1;
+				if(p.affectedByWealth())
+					dbl = 2;
 				if(type == 0) {
-					DungeonGame.coins ++;
+					DungeonGame.coins += 1 * 2;
 				} else if(type == 1) {
-					DungeonGame.coins += 5;
+					DungeonGame.coins += 5 * 2;
 				} else if(type == 2) {
-					DungeonGame.coins += 10;
+					DungeonGame.coins += 10 * 2;
 				}
 			}
 			

@@ -25,6 +25,7 @@ import com.jantox.siege.entities.drones.AGC;
 import com.jantox.siege.entities.drones.Barricade;
 import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.entities.monsters.MonsterFactory;
+import com.jantox.siege.entities.monsters.SpawnerFactory;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Camera;
@@ -49,7 +50,7 @@ public class Map {
 	
 	private Player player;
 	
-	ControlPoint[] cps = new ControlPoint[5];
+	public ControlPoint[] cps = new ControlPoint[5];
 	
 	Sprite grass;
 	
@@ -60,8 +61,13 @@ public class Map {
 	public static int AGC_COUNT = 0;
 	public static int SENTRY_COUNT = 0;
 	
-	public Map() {
+	public Map(Player p) {
 		entities = new ArrayList<Entity>();
+		
+		this.player = p;
+		if(player == null) {
+			System.out.println("shouting");
+		}
 		
 		pengine = new ParticleEngine();
 		minimap = new Minimap(this);
@@ -69,14 +75,16 @@ public class Map {
 	}
 	
 	public void init() {		
-		this.spawn(new AGC(new Vector2D(500, 500)));
-		this.spawn(new AGC(new Vector2D(1000, 500)));
-		this.spawn(new AGC(new Vector2D(500, 1000)));
-		this.spawn(new AGC(new Vector2D(1000, 1000)));
-		this.spawn(new AGC(new Vector2D(750, 750)));
+		this.spawn(new AGC(null, new Vector2D(500, 500)));
+		this.spawn(new AGC(null, new Vector2D(1000, 500)));
+		this.spawn(new AGC(null, new Vector2D(500, 1000)));
+		this.spawn(new AGC(null, new Vector2D(1000, 1000)));
+		this.spawn(new AGC(null, new Vector2D(750, 750)));
 		
 		grass = Assets.loadSprite("grass.png");
 		game_interface = Assets.loadSprite("interface_game.png");
+		
+		this.setPlayer(player);
 		
 		currentstore = null;
 		
@@ -92,7 +100,7 @@ public class Map {
 		currentstore = null;
 		for(Entity e : entities) {
 			if(e instanceof NPC) {
-				if(e.distanceSquared(player) <= 50 * 50) {
+				if(e.distanceSquared(player) <= ((Circle)e.getMask()).getRadius() * ((Circle)e.getMask()).getRadius()) {
 					currentstore = ((NPC)e).getStore();
 					currentstore.update();
 				}
@@ -307,7 +315,6 @@ public class Map {
 	}
 	
 	public void setPlayer(Player p) {
-		this.player = p;
 		player.setPosition(pspawn);
 		entities.add(player);
 	}
@@ -377,6 +384,7 @@ public class Map {
 	
 	public void spawnForge(Vector2D pos) {
 		this.spawn(new NPC(new Vector2D(pos.x, pos.y), NPC.ELI));
+		this.spawn(new NPC(new Vector2D(pos.x + 97, pos.y + 100), NPC.UPGRADE_STATION));
 	}
 	
 	public void spawnArmory(Vector2D pos) {
@@ -406,7 +414,7 @@ public class Map {
 	}
 
 	public ControlPoint getRandomControlPoint() {
-		int index = rand.nextInt(5);
+		int index = Entity.rand.nextInt(5);
 		
 		List<ControlPoint> acp = new ArrayList<ControlPoint>();
 		for(Entity e: entities) {

@@ -1,5 +1,6 @@
 package com.jantox.siege;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -49,20 +50,41 @@ public class Dungeon implements ActionListener {
 			e.printStackTrace();
 		}
 		
-		JButton play = new JButton("Play");
-		play.setBounds(350 - 75, 320 - 20, 150, 40);
-		//play.setIcon(icon);
-		//play.setBorder(BorderFactory.createEmptyBorder());
+		JButton play = new JButton("Play", icon);
+		play.setForeground(Color.WHITE);
+		play.setBounds(350 - 180, 320, 150, 40);
+		play.setHorizontalTextPosition(JButton.CENTER);
+		play.setVerticalTextPosition(JButton.CENTER);
+		play.setBorder(BorderFactory.createEmptyBorder());
+		play.setContentAreaFilled(false);
 		play.addActionListener(this);
 		
-		JButton multi = new JButton("Online");
-		multi.setBounds(350 - 75, 365 - 20, 150, 40);
+		JButton multi = new JButton("Online", icon);
+		multi.setForeground(Color.WHITE);
+		multi.setBounds(350 + 5, 320, 150, 40);
+		multi.setHorizontalTextPosition(JButton.CENTER);
+		multi.setVerticalTextPosition(JButton.CENTER);
+		multi.setBorder(BorderFactory.createEmptyBorder());
+		multi.setContentAreaFilled(false);
+		multi.addActionListener(this);
 		
-		JButton help = new JButton("Help");
-		help.setBounds(350 - 75, 410 - 20, 150, 40);
+		JButton help = new JButton("Help", icon);
+		help.setForeground(Color.WHITE);
+		help.setBounds(350 - 180, 320 + 65, 150, 40);
+		help.setHorizontalTextPosition(JButton.CENTER);
+		help.setVerticalTextPosition(JButton.CENTER);
+		help.setBorder(BorderFactory.createEmptyBorder());
+		help.setContentAreaFilled(false);
+		help.addActionListener(this);
 		
-		JButton quit = new JButton("Quit");
-		quit.setBounds(350 - 75, 455 - 20, 150, 40);
+		JButton quit = new JButton("Quit", icon);
+		quit.setForeground(Color.WHITE);
+		quit.setBounds(350 + 5, 320 + 65, 150, 40);
+		quit.setHorizontalTextPosition(JButton.CENTER);
+		quit.setVerticalTextPosition(JButton.CENTER);
+		quit.setBorder(BorderFactory.createEmptyBorder());
+		quit.setContentAreaFilled(false);
+		quit.addActionListener(this);
 		
 		menu.add(play);
 		menu.add(multi);

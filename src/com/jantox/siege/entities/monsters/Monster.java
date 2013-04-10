@@ -1,6 +1,5 @@
 package com.jantox.siege.entities.monsters;
 
-import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Living;
 import com.jantox.siege.entities.Weapon;

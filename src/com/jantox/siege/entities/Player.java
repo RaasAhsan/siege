@@ -9,6 +9,8 @@ import com.jantox.siege.PotionEffect;
 import com.jantox.siege.colsys.AABB;
 import com.jantox.siege.colsys.Circle;
 import com.jantox.siege.entities.drones.SentryGun;
+import com.jantox.siege.entities.drones.Barricade;
+import com.jantox.siege.entities.monsters.MonsterFactory;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Camera;
@@ -39,7 +41,7 @@ public class Player extends Living {
 		this.colmask = new Circle(this.pos, 10);
 		this.input = ui;
 		this.requestCollisions(entity_type.TREE, entity_type.FENCE, entity_type.GATE, entity_type.BARRICADE, entity_type.SPAWNER);
-		this.health = 100;
+		this.health = this.maxhealth = 100;
 		
 		this.cam = new Camera(this.pos, sdim);
 		
@@ -51,49 +53,69 @@ public class Player extends Living {
 		heart.update();
 		
 		inventory = new Inventory();
-		
+	}
+	
+	public void init() {
 		this.pickup(new Blaster(this));
-		this.pickup(new Bow(this));
+		/*this.pickup(new Bow(this));
 		this.pickup(new Potion(this, 1));
 		for(int i = 0; i < 64; i++) {
 			this.pickup(new Projectile(new Vector2D(0, 0), new Vector2D(0, 0), 0, Projectile.ARROW));
 		}
 		for(int i = 0; i < 8; i++)
-			this.pickup(new Claymore(this, new Vector2D(), 0));
-		/*this.pickup(new Axe(this));
-		this.pickup(new Hammer(this));
-		for(int i = 0; i < 128; i++) {
-			this.pickup(new Projectile(new Vector2D(0, 0), new Vector2D(0, 0), 0, Projectile.ARROW));
-		}
-		for(int i = 0; i < 16; i++)
-			this.pickup(new Barricade(this, new Vector2D()));
-		this.pickup(new Sword(this));
-		for(int i = 0; i < 64; i++)
-			this.pickup(new SentryGun(null, new Vector2D()));*/
+			this.pickup(new Claymore(this, new Vector2D(), 0));*/
 	}
 	
 	@Override
 	public void handleCollision(Entity e) {
-		pos = prevpos;
-		
-		cam.update(this.pos.copy());
+		if(e instanceof Tree || e instanceof Fence || e instanceof Barricade || e instanceof MonsterFactory) {
+			pos = prevpos;
+			cam.update(this.pos.copy());
+		}
+		if(e instanceof Decoration) {
+			if(((Decoration)e).getType() != Decoration.FOOTPATH) {
+				pos = prevpos;
+				cam.update(this.pos.copy());
+			}
+		}
 	}
 
 	@Override
 	public void update() {
 		prevpos = pos.copy();
+		
+		double speed = 1;
+		for(int i = 0; i < peffects.size(); i++) {
+			PotionEffect pe = peffects.get(i);
+			if(pe.timeleft <= 0) {
+				peffects.remove(pe);
+			} else {
+				pe.update();
+				if(pe.potionid == 1)
+					speed = 2;
+				if(Entity.ticks % 15 == 0) {
+					Vector2D vel = new Vector2D(rand.nextGaussian()/6, -0.5);
+					Vector2D np = pos.copy();
+					np.y -= 16;
+					np.x += rand.nextGaussian() * 5;
+					np.y += rand.nextGaussian() * 5;
+					map.spawn(new TextureParticle(rand.nextInt(5) + 90, np.copy(), vel, 0, Assets.loadSprite("bubble.png")));
+				}
+			}
+		}
+		
 		if(Keyboard.up) {
-			pos.y-=1;
+			pos.y-=1*speed;
 			direction = UP;
 		} else if(Keyboard.down) {
-			pos.y+=1;
+			pos.y+=1*speed;
 			direction = DOWN;
 		} 
 		if(Keyboard.right) {
-			pos.x += 1;
+			pos.x += 1*speed;
 			direction = RIGHT;
 		} else if(Keyboard.left) {
-			pos.x -= 1;
+			pos.x -= 1*speed;
 			direction = LEFT;
 		}
 		
@@ -150,6 +172,22 @@ public class Player extends Living {
 	
 	public Camera getCamera() {
 		return cam;
+	}
+	
+	public boolean affectedByWealth() {
+		for(PotionEffect pe : peffects) {
+			if(pe.potionid == 3) 
+				return true;
+		}
+		return false;
+	}
+	
+	public boolean affectedByStrength() {
+		for(PotionEffect pe : peffects) {
+			if(pe.potionid == 2) 
+				return true;
+		}
+		return false;
 	}
 	
 	public Inventory getInventory() {

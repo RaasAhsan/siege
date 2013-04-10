@@ -18,7 +18,7 @@ import com.jantox.siege.scripts.ScriptReader;
 @SuppressWarnings("serial")
 public class DungeonGame extends Canvas implements Runnable {
 	
-	public static int coins = 100;
+	public static int coins = 800;
 	public static int tcoins = 100;
 	
 	private Thread thread;
@@ -37,6 +37,8 @@ public class DungeonGame extends Canvas implements Runnable {
 	public static float interp;
 
 	public static boolean paused = false;
+	
+	private Sprite pausemode;
 	
 	private GameMode gamemode;
 	
@@ -57,12 +59,13 @@ public class DungeonGame extends Canvas implements Runnable {
 		this.addMouseMotionListener(ui);
 		
 		youlost = Assets.loadSprite("youlost.png");
+		pausemode = Assets.loadSprite("pause_menu.png");
 		
 		try {
-			map = new ScriptReader().readMapScript("map.msf");
-			map.setPlayer(new Player(new Vector2D(1200, 400), ui, new Vector2D(700, 500)));
+			Player p = new Player(new Vector2D(1200, 400), ui, new Vector2D(700, 500));
+			map = new ScriptReader().readMapScript(p, "map.msf");
+			p.init();
 			
-			Entity.map = map;
 			map.init();
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
@@ -151,10 +154,8 @@ public class DungeonGame extends Canvas implements Runnable {
 
 			while (now - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS
 					&& now - lastUpdateTime < TIME_BETWEEN_UPDATES) {
-				Thread.yield();
-
 				try {
-					Thread.sleep(1);
+					Thread.sleep(5);
 				} catch (Exception e) {
 				}
 
@@ -208,6 +209,9 @@ public class DungeonGame extends Canvas implements Runnable {
 		Renderer renderer = Renderer.create(g, map.getPlayer().getCamera());
 		map.render(renderer);
 		gamemode.render(renderer);
+		if(paused) {
+			renderer.drawSprite(pausemode, new Vector2D(), false);
+		}
 		//renderer.drawSprite(youlost, new Vector2D(), false);
 	}
 	

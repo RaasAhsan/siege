@@ -1,6 +1,7 @@
 package com.jantox.siege.entities;
 
 import com.jantox.siege.Item;
+import com.jantox.siege.math.Vector2D;
 
 public abstract class Weapon extends Entity implements Item {
 

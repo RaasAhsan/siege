@@ -1,8 +1,8 @@
 package com.jantox.siege.entities.monsters;
 
-import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.colsys.AABB;
 import com.jantox.siege.entities.Entity;
+import com.jantox.siege.entities.Gem;
 import com.jantox.siege.entities.Living;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
@@ -10,7 +10,7 @@ import com.jantox.siege.scripts.Assets;
 
 public class MonsterFactory extends Living {
 	
-	public static final int SPAWN_BREAK = 500;
+	public static final int SPAWN_BREAK = 400;
 	
 	private float radius;
 	
@@ -23,7 +23,7 @@ public class MonsterFactory extends Living {
 		
 		this.colmask = new AABB(pos.copy(), 56, 10);
 		
-		this.maxhealth = this.health = 1200 + 20 * SpawnerFactory.SPAWNERS_DESTROYED;
+		this.maxhealth = this.health = 1500 + 5 * SpawnerFactory.SPAWNERS_DESTROYED + (SpawnerFactory.SPAWN_NUMBER - 1) * 250;
 		
 		this.totalSpawned = 0;
 		this.radius = 30;
@@ -42,6 +42,10 @@ public class MonsterFactory extends Living {
 			SpawnerFactory.CURRENT_SPAWNERS--;
 			SpawnerFactory.SPAWNERS_DESTROYED ++;
 			this.expired = true;
+			for(int i = 0; i < 5; i++) {
+				map.spawn(new Gem(new Vector2D(pos.x + rand.nextGaussian() *10, pos.y + rand.nextGaussian() * 10)));
+			}
+			SpawnerFactory.seconds += 5;
 		}
 		
 		timeSinceLast++;
@@ -64,7 +68,7 @@ public class MonsterFactory extends Living {
 			}
 		}
 		
-		this.sprite.setAnimation(health / 240, health / 240, 0);
+		this.sprite.setAnimation(health / (maxhealth / 5), health / (maxhealth / 5), 0);
 		sprite.update();
 	}
 	

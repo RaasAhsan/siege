@@ -90,27 +90,31 @@ public class Minimap {
 					renderer.fill(new Rectangle(to.getX() - 1, to.getY() - 1,
 							3, 3), false);
 				}
-				continue;
 			} else {
 				continue;
 			}
 			icons.update();
 
-			if (to.distanceSquared(ppos) < 65 * 65) {
-				renderer.drawSprite(icons, new Vector2D(to.x - 16, to.y - 16),
-						false);
+			if (to.distanceSquared(ppos) < 65 * 65 && !(e instanceof Skeleton) && !(e instanceof Zombie)) {
+				renderer.drawSprite(icons, new Vector2D(to.x - 16, to.y - 16),false);
 			} else {
-				if (e instanceof MonsterFactory) {
+				if (to.distanceSquared(ppos) > 65 * 65) {
 					to = e.pos.copy();
 					to.subtract(p.getPosition());
-
+	
 					to.normalize();
 					to.multiply(75);
-
+	
 					to.add(ppos);
-
-					renderer.drawSprite(icons, new Vector2D(to.x - 16,
-							to.y - 16), false);
+	
+					if (e instanceof MonsterFactory) {
+						renderer.drawSprite(icons, new Vector2D(to.x - 16,
+								to.y - 16), false);
+					} else if(e instanceof Zombie || e instanceof Skeleton) {
+						renderer.setColor(Color.RED);
+						renderer.fill(new Rectangle(to.getX() - 1, to.getY() - 1,
+								3, 3), false);
+					}
 				}
 			}
 		}

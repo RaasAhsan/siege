@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.jantox.siege.Item;
 import com.jantox.siege.Keyboard;
+import com.jantox.siege.entities.drones.AGC;
 import com.jantox.siege.entities.drones.Barricade;
 import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.gfx.Renderer;
@@ -17,7 +18,7 @@ public class Inventory extends Entity {
 	
 	public enum ItemType {
 
-		WOOD, BOW, ARROW, BLASTER, AXE, HAMMER, BARRICADE, SWORD, SENTRY_GUN, POTION_HEALTH, POTION_SWIFT, POTION_STRENGTH, POTION_WEALTH, CLAYMORE
+		WOOD, BOW, ARROW, BLASTER, AXE, HAMMER, BARRICADE, SWORD, SENTRY_GUN, POTION_HEALTH, POTION_SWIFT, POTION_STRENGTH, POTION_WEALTH, CLAYMORE, AGC
 		
 	}
 	
@@ -82,6 +83,12 @@ public class Inventory extends Entity {
 		item_sprites[ItemType.POTION_WEALTH.ordinal()].update();
 		
 		item_sprites[ItemType.CLAYMORE.ordinal()] = Assets.loadSprite("claymore.png");
+		item_sprites[ItemType.CLAYMORE.ordinal()].setAnimation(2, 2, 0);
+		item_sprites[ItemType.CLAYMORE.ordinal()].update();
+		
+		item_sprites[ItemType.AGC.ordinal()] = Assets.loadSprite("agc.png");
+		item_sprites[ItemType.AGC.ordinal()].setAnimation(4,4,0);
+		item_sprites[ItemType.AGC.ordinal()].update();
 	}
 	
 	public void update() {
@@ -138,11 +145,17 @@ public class Inventory extends Entity {
 		renderer.setColor(Color.WHITE);
 		renderer.setFont(new Font("Lucida Console", Font.BOLD, 9));
 		
+		renderer.drawSprite(selsprite, new Vector2D(pos.x, pos.y + selected * 3 + selected * 32), false);
+		
 		for(int i = 0; i < 9; i++) {
 			Item item = this.getItemAtSlot(i);
 			if(item != null) {
-				renderer.drawSprite(item_sprites[this.getItemTypeOf(item).ordinal()], new Vector2D(pos.x + 3, pos.y + 3 + i * 2 + i * 32), false);
-				//renderer.drawText(this.getAmountOfItemsInSlot(i) + "", new Vector2D(pos.x + 3 , pos.y + (32 * i) + i * 3 + 7));
+				renderer.drawSprite(item_sprites[this.getItemTypeOf(item)
+						.ordinal()], new Vector2D(pos.x + 3, pos.y + 3 + i * 3
+						+ i * 32), false);
+				renderer.setColor(new Color(0, 255, 255));
+				renderer.drawText(this.getAmountOfItemsInSlot(i) + "",
+						new Vector2D(pos.x + 3, pos.y + (32 * i) + i * 3 + 7 + 3));
 			} else {
 				continue;
 			}
@@ -246,6 +259,8 @@ public class Inventory extends Entity {
 				return ItemType.POTION_STRENGTH;
 			else if(p.getType() == 3)
 				return ItemType.POTION_WEALTH;
+		} else if(i instanceof AGC) {
+			return ItemType.AGC;
 		}
 		
 		return null;
@@ -262,10 +277,19 @@ public class Inventory extends Entity {
 			return new Potion(Entity.map.getPlayer(), Potion.POTION_STRENGTH);
 		} else if(it == ItemType.POTION_SWIFT) {
 			return new Potion(Entity.map.getPlayer(), Potion.POTION_SWIFT);
+		} else if(it == ItemType.POTION_WEALTH) {
+			return new Potion(Entity.map.getPlayer(), Potion.POTION_WEALTH);
 		} else if(it == ItemType.BOW) {
 			return new Bow(Entity.map.getPlayer());
 		} else if(it == ItemType.SENTRY_GUN) {
-			return new SentryGun(null, new Vector2D(0,0));
+			if(Entity.map.getPlayer() == null) {
+				System.out.println("YO");
+			}
+			return new SentryGun(Entity.map.getPlayer(), new Vector2D(0,0));
+		} else if(it == ItemType.AGC) {
+			return new AGC(Entity.map.getPlayer(), new Vector2D(0,0));
+		} else if(it == ItemType.CLAYMORE) {
+			return new Claymore(Entity.map.getPlayer(), new Vector2D(0,0), 2);
 		}
 		return null;
 	}

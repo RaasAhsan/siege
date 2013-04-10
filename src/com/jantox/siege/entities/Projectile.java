@@ -33,16 +33,21 @@ public class Projectile extends Entity implements Item {
 		
 		this.requestCollisions(entity_type.ALL);
 		
+		int dbl = 1;
+		if(Entity.map.getPlayer() != null)
+			if(Entity.map.getPlayer().affectedByStrength())
+				dbl = 2;
+		
 		if(type == BLAST) {
 			this.sprite = Assets.loadSprite("blast.png");
 			dir.x *= 4;
 			dir.y *= 4;
-			this.damage = 50;
+			this.damage = 50 * dbl;
 		} else if(type == ARROW) {
 			this.sprite = Assets.loadSprite("arrow.png");
 			dir.x *= 25;
 			dir.y *= 25;
-			this.damage = 300;
+			this.damage = 300 * dbl;
 		}
 		
 		angle = Math.toDegrees(angle);

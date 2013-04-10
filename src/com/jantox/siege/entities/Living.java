@@ -2,10 +2,10 @@ package com.jantox.siege.entities;
 
 import com.jantox.siege.Dropper;
 import com.jantox.siege.Map;
-import com.jantox.siege.SpawnerFactory;
 import com.jantox.siege.entities.drones.AGC;
 import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.entities.monsters.Skeleton;
+import com.jantox.siege.entities.monsters.SpawnerFactory;
 import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.math.Vector2D;
 

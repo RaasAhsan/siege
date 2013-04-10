@@ -71,7 +71,7 @@ public class ControlMap {
 				
 				if(e instanceof AGC) {
 					rdrones.add(e);
-					drones.add(new AGC(new Vector2D(epos.x + 350, epos.y + 250)));
+					//drones.add(new AGC(new Vector2D(epos.x + 350, epos.y + 250)));
 				}
 			}
 		}

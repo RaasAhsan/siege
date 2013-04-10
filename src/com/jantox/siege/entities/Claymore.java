@@ -35,7 +35,7 @@ public class Claymore extends Entity implements Item {
 	}
 	
 	public void update() {
-		if(inventory) {
+		if(inventory && held) {
 			Vector2D pvel = new Vector2D(Keyboard.x, Keyboard.y);
 			Vector2D cvel = new Vector2D(map.getPlayer().pos.x - map.getCamera().pos.x, map.getPlayer().pos.y - map.getCamera().pos.y);
 			
