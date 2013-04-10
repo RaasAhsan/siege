@@ -86,7 +86,7 @@ public class Zombie extends Living {
 		if(timedone > 60 * 45) {
 			if(!gotodone) {
 				this.expired = true;
-				SpawnerFactory.CURRENT_MONSTERS--;
+				SpawnerFactory.MONSTERS_ALIVE--;
 			}
 		}
 		

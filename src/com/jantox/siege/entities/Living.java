@@ -24,8 +24,9 @@ public abstract class Living extends Entity implements Dropper {
 		if(this.isDead() && !expired)  {
 			expired = true;
 			if(this instanceof Zombie || this instanceof Skeleton) {
-				SpawnerFactory.CURRENT_MONSTERS--;
-				SpawnerFactory.MONSTERS_KILLED ++;
+				SpawnerFactory.MONSTERS_KILLED++;
+				SpawnerFactory.MONSTERS_ALIVE--;
+				SpawnerFactory.POINTS_NEEDED--;
 			} else if(this instanceof AGC) {
 				Map.AGC_COUNT --;
 			} else if(this instanceof SentryGun) {

@@ -11,6 +11,8 @@ public class Monster extends Living {
 	
 	enum monster_type { ZOMBIE, SKELETON };
 	
+	public static int HEALTH = 300;
+	
 	private Weapon weapon;
 	private double speed, damage;
 	
@@ -22,14 +24,14 @@ public class Monster extends Living {
 		this.speed = speed;
 		this.damage = damage;
 		
-		SpawnerFactory.CURRENT_MONSTERS++;
+		//SpawnerFactory.CURRENT_MONSTERS++;
 	}
 	
 	public void update() {
 		super.update();
 		
 		if(health < 0) {
-			SpawnerFactory.CURRENT_MONSTERS--;
+			//SpawnerFactory.CURRENT_MONSTERS--;
 		}
 	}
 

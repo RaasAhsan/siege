@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import com.jantox.siege.entities.Entity;
 import com.jantox.siege.entities.Player;
+import com.jantox.siege.entities.monsters.SpawnerFactory;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
@@ -23,8 +24,8 @@ public class DungeonGame extends Canvas implements Runnable {
 	public static int coins = 100;
 	public static int tcoins = 100;
 	
-	public static int wave = 1;
-	public static int breakTime = 30; // seconds
+	public static int wave = 0;
+	public static int breakTime = 0; // seconds
 	
 	private int cbreak = 0;
 	
@@ -45,11 +46,12 @@ public class DungeonGame extends Canvas implements Runnable {
 
 	public static boolean paused = false;
 	
-	private Sprite pausemode;
+	private Sprite pausemode, wavecomplete;
 	
 	private GameMode gamemode;
 	
 	public static int fps = 0;
+	public static int wave_complete = 0;
 	
 	private Sprite youlost;
 	
@@ -67,6 +69,7 @@ public class DungeonGame extends Canvas implements Runnable {
 		
 		youlost = Assets.loadSprite("youlost.png");
 		pausemode = Assets.loadSprite("pause_menu.png");
+		wavecomplete = Assets.loadSprite("wave_complete.png");
 		
 		try {
 			Player p = new Player(new Vector2D(1200, 400), ui, new Vector2D(700, 500));
@@ -162,7 +165,7 @@ public class DungeonGame extends Canvas implements Runnable {
 			while (now - lastRenderTime < TARGET_TIME_BETWEEN_RENDERS
 					&& now - lastUpdateTime < TIME_BETWEEN_UPDATES) {
 				try {
-					Thread.sleep(5);
+					Thread.sleep(2);
 				} catch (Exception e) {
 				}
 
@@ -177,6 +180,8 @@ public class DungeonGame extends Canvas implements Runnable {
 			Entity.ticks = 0;
 		}
 		
+		if(wave_complete > 0)
+			wave_complete--;
 		
 		if(Entity.ticks % 3 == 0) {
 			if(Math.ceil(DungeonGame.tcoins) < Math.ceil(DungeonGame.coins)) {
@@ -205,9 +210,20 @@ public class DungeonGame extends Canvas implements Runnable {
 		Renderer renderer = Renderer.create(g, map.getPlayer().getCamera());
 		map.render(renderer);
 		gamemode.render(renderer);
-		renderer.setColor(Color.RED);
+		renderer.setColor(Color.YELLOW);
 		renderer.setFont(new Font(Font.SANS_SERIF, 0, 20));
 		renderer.drawText("Wave " + wave, new Vector2D(310, 30));
+		if(breakTime > 0) {
+			renderer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 14));
+			renderer.drawText("Next Wave In: " + breakTime, new Vector2D(280, 60));
+		}
+		renderer.setColor(Color.RED);
+		renderer.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 15));
+		renderer.drawText("Need Kills: " + SpawnerFactory.POINTS_NEEDED, new Vector2D(553, 185));
+		if(wave_complete > 0) {
+			renderer.drawSprite(wavecomplete, new Vector2D(), false);
+		}
+		
 		if(paused) {
 			renderer.drawSprite(pausemode, new Vector2D(), false);
 		}

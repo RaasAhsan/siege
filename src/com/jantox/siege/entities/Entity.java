@@ -161,4 +161,8 @@ public abstract class Entity implements Active, CollisionOwner {
 		return new Vector2D(pos.x, pos.y);
 	}
 
+	public void setExpired(boolean b) {
+		this.expired = b;
+	}
+
 }

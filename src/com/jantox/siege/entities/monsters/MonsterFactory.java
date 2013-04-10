@@ -10,12 +10,7 @@ import com.jantox.siege.scripts.Assets;
 
 public class MonsterFactory extends Living {
 	
-	public static int MAX_BREAK = 400;
-	public static int MIN_BREAK = 150;
-	
-	public static int SPAWN_NUMBER = 1;
-	
-	public static int SPAWN_BREAK = 400;
+	public static int HEALTH = 1500;
 	
 	private float radius;
 	
@@ -23,12 +18,14 @@ public class MonsterFactory extends Living {
 	private long timeSinceLast;
 	private boolean spawning;
 	
+	long seconds, ms;
+	
 	public MonsterFactory(Vector2D pos) {
 		super(pos);
 		
 		this.colmask = new AABB(pos.copy(), 56, 10);
 		
-		this.maxhealth = this.health = 1500 + 5 * SpawnerFactory.SPAWNERS_DESTROYED + (SpawnerFactory.SPAWN_NUMBER - 1) * 250;
+		this.maxhealth = this.health = HEALTH;
 		
 		this.totalSpawned = 0;
 		this.radius = 30;
@@ -37,15 +34,22 @@ public class MonsterFactory extends Living {
 		
 		this.sprite = Assets.loadSprite("spawner.png");
 		
-		SpawnerFactory.CURRENT_SPAWNERS++;
+		SpawnerFactory.SPAWNERS_ALIVE++;
 	}
 	
 	public void update() {
 		super.update();
 		
+		long now = System.currentTimeMillis();
+		if(now - ms >= 1000) {
+			seconds++;
+			ms = System.currentTimeMillis();
+		}
+		
 		if(health <= 0) {
-			SpawnerFactory.CURRENT_SPAWNERS--;
-			SpawnerFactory.SPAWNERS_DESTROYED ++;
+			SpawnerFactory.SPAWNERS_ALIVE--;
+			SpawnerFactory.SPAWNERS_KILLED++;
+			SpawnerFactory.POINTS_NEEDED-=2;
 			this.expired = true;
 			for(int i = 0; i < 5; i++) {
 				map.spawn(new Gem(new Vector2D(pos.x + rand.nextGaussian() *10, pos.y + rand.nextGaussian() * 10)));
@@ -53,30 +57,16 @@ public class MonsterFactory extends Living {
 			SpawnerFactory.seconds += 5;
 		}
 		
-		timeSinceLast++;
-		
-		if(timeSinceLast > SPAWN_BREAK) {
-			
-			this.SPAWN_BREAK = (int) (-10 * SpawnerFactory.MONSTERS_KILLED + -4 * SpawnerFactory.SPAWNERS_DESTROYED + MAX_BREAK);
-			if(SPAWN_BREAK > MAX_BREAK)
-				SPAWN_BREAK = MAX_BREAK;
-			else if(SPAWN_BREAK < MIN_BREAK)
-				SPAWN_BREAK = MIN_BREAK;
-			
-			if(rand.nextInt() % 37 == 0) {
-				if(spawning) {
-					if(SpawnerFactory.CURRENT_MONSTERS < SpawnerFactory.MAX_MONSTERS) {
-						Vector2D rand = this.getCloseTo(180);
-						
-						Vector2D sps = new Vector2D(Entity.rand.nextGaussian(), Entity.rand.nextGaussian());
-						sps.normalize();
-						sps.multiply(40 + Entity.rand.nextGaussian() * 128);
-						sps.add(pos.copy());
-						this.spawn(entity_type.PLAYER, sps, rand);
-						SpawnerFactory.CURRENT_MONSTERS++;
-						System.out.println("Monsters Alive: " + SpawnerFactory.CURRENT_MONSTERS);
-					}
-				}
+		if(seconds == SpawnerFactory.MONSTER_RATE) {
+			seconds = 0;
+			for(int i = 0; i < SpawnerFactory.MONSTER_NUM_RATE; i++) {
+				Vector2D rand = this.getCloseTo(180);
+
+				Vector2D sps = new Vector2D(Entity.rand.nextGaussian(), Entity.rand.nextGaussian());
+				sps.normalize();
+				sps.multiply(40 + Entity.rand.nextGaussian() * 128);
+				sps.add(pos.copy());
+				this.spawn(sps, rand);
 			}
 		}
 		
@@ -84,10 +74,7 @@ public class MonsterFactory extends Living {
 		sprite.update();
 	}
 	
-	public void spawn(entity_type type, Vector2D pos, Vector2D gotoline) {
-		totalSpawned++;
-		timeSinceLast = 0;
-		
+	public void spawn(Vector2D pos, Vector2D gotoline) {
 		if(rand.nextInt() % 2 == 0)
 			map.spawn(new Zombie(pos, gotoline));
 		else 

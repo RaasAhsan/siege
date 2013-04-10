@@ -25,7 +25,9 @@ import com.jantox.siege.entities.drones.AGC;
 import com.jantox.siege.entities.drones.Barricade;
 import com.jantox.siege.entities.drones.SentryGun;
 import com.jantox.siege.entities.monsters.MonsterFactory;
+import com.jantox.siege.entities.monsters.Skeleton;
 import com.jantox.siege.entities.monsters.SpawnerFactory;
+import com.jantox.siege.entities.monsters.Zombie;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Camera;
@@ -436,6 +438,15 @@ public class Map {
 		}
 		
 		return e;
+	}
+
+	public void clearMonsters() {
+		for(int i = 0; i < entities.size(); i++) {
+			Entity e = entities.get(i);
+			if(e instanceof MonsterFactory || e instanceof Zombie || e instanceof Skeleton) {
+				e.setExpired(true);
+			}
+		}
 	}
 
 }
