@@ -17,8 +17,6 @@ import com.jantox.siege.entities.Inventory.ItemType;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
-import com.jantox.siege.sfx.Sound;
-import com.jantox.siege.sfx.Sounds;
 
 public class SentryGun extends Living implements Item {
 	
@@ -150,7 +148,6 @@ public class SentryGun extends Living implements Item {
 		Vector2D pvel = new Vector2D(Keyboard.x + map.getCamera().pos.x, Keyboard.y + map.getCamera().pos.y);
 		
 		if(map.isFree(pvel, 15)) {
-			Sounds.play(new Sound.Place());
 			this.pos = pvel.copy();
 			map.getPlayer().getInventory().useItem(ItemType.SENTRY_GUN);
 			map.spawn(new SentryGun(null, this.pos.copy()));

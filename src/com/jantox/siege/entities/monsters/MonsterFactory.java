@@ -10,7 +10,12 @@ import com.jantox.siege.scripts.Assets;
 
 public class MonsterFactory extends Living {
 	
-	public static final int SPAWN_BREAK = 400;
+	public static int MAX_BREAK = 400;
+	public static int MIN_BREAK = 150;
+	
+	public static int SPAWN_NUMBER = 1;
+	
+	public static int SPAWN_BREAK = 400;
 	
 	private float radius;
 	
@@ -51,6 +56,13 @@ public class MonsterFactory extends Living {
 		timeSinceLast++;
 		
 		if(timeSinceLast > SPAWN_BREAK) {
+			
+			this.SPAWN_BREAK = (int) (-10 * SpawnerFactory.MONSTERS_KILLED + -4 * SpawnerFactory.SPAWNERS_DESTROYED + MAX_BREAK);
+			if(SPAWN_BREAK > MAX_BREAK)
+				SPAWN_BREAK = MAX_BREAK;
+			else if(SPAWN_BREAK < MIN_BREAK)
+				SPAWN_BREAK = MIN_BREAK;
+			
 			if(rand.nextInt() % 37 == 0) {
 				if(spawning) {
 					if(SpawnerFactory.CURRENT_MONSTERS < SpawnerFactory.MAX_MONSTERS) {

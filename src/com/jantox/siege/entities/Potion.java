@@ -5,8 +5,6 @@ import com.jantox.siege.PotionEffect;
 import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;
-import com.jantox.siege.sfx.Sound;
-import com.jantox.siege.sfx.Sounds;
 
 public class Potion extends Entity implements Item {
 

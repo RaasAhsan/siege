@@ -1,7 +1,9 @@
 package com.jantox.siege;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -18,8 +20,13 @@ import com.jantox.siege.scripts.ScriptReader;
 @SuppressWarnings("serial")
 public class DungeonGame extends Canvas implements Runnable {
 	
-	public static int coins = 800;
+	public static int coins = 100;
 	public static int tcoins = 100;
+	
+	public static int wave = 1;
+	public static int breakTime = 30; // seconds
+	
+	private int cbreak = 0;
 	
 	private Thread thread;
 	private Keyboard ui;
@@ -173,24 +180,13 @@ public class DungeonGame extends Canvas implements Runnable {
 		
 		if(Entity.ticks % 3 == 0) {
 			if(Math.ceil(DungeonGame.tcoins) < Math.ceil(DungeonGame.coins)) {
-				tcoins = (int) (coins + (tcoins - coins) / 1.5);
+				tcoins = (int) (coins + (tcoins - coins) / 2);
 			} else if(Math.ceil(DungeonGame.tcoins) > Math.ceil(DungeonGame.coins)) {
-				tcoins = (int) (coins + (tcoins - coins) / 1.5);
+				tcoins = (int) (coins + (tcoins - coins) / 2);
 			} else if(Math.ceil(tcoins) == Math.ceil(coins)) {
 				tcoins = coins;
 			}
 		}
-		
-		/*
-		 * if scrolling > current
-		{
-		   scrolling = current + (scrolling - current)/2)
-		}
-		if scrolling < current
-		{
-		   scrolling = current - (scrolling - current)/2)
-		}
-		 */
 		
 		map.update();
 		gamemode.update();
@@ -209,10 +205,12 @@ public class DungeonGame extends Canvas implements Runnable {
 		Renderer renderer = Renderer.create(g, map.getPlayer().getCamera());
 		map.render(renderer);
 		gamemode.render(renderer);
+		renderer.setColor(Color.RED);
+		renderer.setFont(new Font(Font.SANS_SERIF, 0, 20));
+		renderer.drawText("Wave " + wave, new Vector2D(310, 30));
 		if(paused) {
 			renderer.drawSprite(pausemode, new Vector2D(), false);
 		}
-		//renderer.drawSprite(youlost, new Vector2D(), false);
 	}
 	
 }

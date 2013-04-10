@@ -75,16 +75,14 @@ public class Map {
 	}
 	
 	public void init() {		
-		this.spawn(new AGC(null, new Vector2D(500, 500)));
-		this.spawn(new AGC(null, new Vector2D(1000, 500)));
-		this.spawn(new AGC(null, new Vector2D(500, 1000)));
-		this.spawn(new AGC(null, new Vector2D(1000, 1000)));
-		this.spawn(new AGC(null, new Vector2D(750, 750)));
+		this.setPlayer(player);
+		
+		this.spawn(new AGC(null, new Vector2D(player.pos.x + 32, player.pos.y)));
+		this.spawn(new AGC(null, new Vector2D(player.pos.x - 32, player.pos.y)));
+		this.spawn(new AGC(null, new Vector2D(player.pos.x , player.pos.y + 32)));
 		
 		grass = Assets.loadSprite("grass.png");
 		game_interface = Assets.loadSprite("interface_game.png");
-		
-		this.setPlayer(player);
 		
 		currentstore = null;
 		

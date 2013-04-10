@@ -128,7 +128,7 @@ public abstract class Entity implements Active, CollisionOwner {
 		Vector2D sp = pos.copy();
 		sp.x += rand.nextGaussian() * radius;
 		sp.y += rand.nextGaussian() * radius;
-		return sp;
+		return sp.copy();
 	}
 	
 	public CollisionMask getMask() {

@@ -27,8 +27,6 @@ import com.jantox.siege.gfx.Renderer;
 import com.jantox.siege.gfx.Sprite;
 import com.jantox.siege.math.Vector2D;
 import com.jantox.siege.scripts.Assets;
-import com.jantox.siege.sfx.Sound;
-import com.jantox.siege.sfx.Sounds;
 
 public class Store {
 	
@@ -121,7 +119,6 @@ public class Store {
 					new Circle(mouse,3))) {
 				if(selected != items.indexOf(si)) {
 					selected = items.indexOf(si);
-					Sounds.play(new Sound.Select());
 				}
 			}
 		}
@@ -210,7 +207,6 @@ public class Store {
 		if(breaktime <= 0) {
 			if(this.canAfford(items.get(selected).cost)) {
 				DungeonGame.coins -= items.get(selected).cost;
-				Sounds.play(new Sound.Place());
 				breaktime = 5;
 				items.get(selected).amount--;
 				for(int i = 0; i < items.get(selected).get; i++)

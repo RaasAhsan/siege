@@ -1,6 +1,8 @@
 package com.jantox.siege.entities.monsters;
 
 import com.jantox.siege.Map;
+import com.jantox.siege.entities.Entity;
+import com.jantox.siege.math.Vector2D;
 
 public class SpawnerFactory {
 	
@@ -12,8 +14,8 @@ public class SpawnerFactory {
 	public static final int MAX_SPAWNERS = 5;
 	public static final int MAX_MONSTERS = 35;
 	
-	public static final int MAX_TIME_BETWEEN_SPAWNERS = 40;
-	public static final int MIN_TIME_BETWEEN_SPAWNERS = 15;
+	public static int MAX_TIME_BETWEEN_SPAWNERS = 30;
+	public static int MIN_TIME_BETWEEN_SPAWNERS = 15;
 	
 	public static int SPAWN_NUMBER = 1;
 
@@ -26,7 +28,7 @@ public class SpawnerFactory {
 	
 	public SpawnerFactory(Map map) {
 		this.map = map;
-		seconds = 10;
+		seconds = 0;
 		ms = System.currentTimeMillis();
 	}
 	
@@ -43,18 +45,26 @@ public class SpawnerFactory {
 				int sp = SPAWN_NUMBER;
 				if(SPAWN_NUMBER > 3)
 					sp = 3;
-				for(int i = 0; i < sp; i++)
-					if(SpawnerFactory.CURRENT_SPAWNERS < SpawnerFactory.MAX_SPAWNERS)
-						map.spawn(new MonsterFactory(map.cps[2].getCloseTo(200)));
+				for(int i = 0; i < sp; i++) {
+					if(SpawnerFactory.CURRENT_SPAWNERS < SpawnerFactory.MAX_SPAWNERS) {
+						for(int j = 0;j < 100; j++) {
+							Vector2D pos = map.cps[2].getCloseTo(250);
+							if(map.isFree(pos, 20)) {
+								map.spawn(new MonsterFactory(pos));
+								break;
+							}
+						}
+					}
+				}
 				System.out.println("Spawners Active: " + CURRENT_SPAWNERS);
 			}
 		}
 		
 		if(seconds % 10 == 0) {
 			// this is the spawner algorithm
-			this.spawntime = -0.5 * SpawnerFactory.SPAWNERS_DESTROYED - 0.25
+			this.spawntime = 0.5 * SpawnerFactory.SPAWNERS_DESTROYED - 0.25
 					* Map.AGC_COUNT - 0.25 * Map.SENTRY_COUNT
-					+ SpawnerFactory.MAX_TIME_BETWEEN_SPAWNERS;
+					+ SpawnerFactory.MIN_TIME_BETWEEN_SPAWNERS;
 			// should get rid of these so there can be *special* occurences maybe
 			if(spawntime > SpawnerFactory.MAX_TIME_BETWEEN_SPAWNERS) 
 				spawntime = SpawnerFactory.MAX_TIME_BETWEEN_SPAWNERS;
